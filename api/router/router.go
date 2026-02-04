@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 
 	categoriesHandler "github.com/pandusatrianura/kasir_api_service/internal/categories/delivery/http"
@@ -9,7 +8,6 @@ import (
 	indexHandler "github.com/pandusatrianura/kasir_api_service/internal/index/delivery/http"
 	productsHandler "github.com/pandusatrianura/kasir_api_service/internal/products/delivery/http"
 	transactionsHandler "github.com/pandusatrianura/kasir_api_service/internal/transactions/delivery/http"
-	"github.com/pandusatrianura/kasir_api_service/pkg/scalar"
 )
 
 type Router struct {
@@ -50,24 +48,12 @@ func (h *Router) RegisterRoutes() *http.ServeMux {
 	r.HandleFunc("DELETE /categories/{id}", h.categories.DeleteCategory)
 	r.HandleFunc("GET /transactions/health", h.transactions.API)
 	r.HandleFunc("POST /transactions/checkout", h.transactions.Checkout)
-	r.HandleFunc("GET /docs", func(w http.ResponseWriter, r *http.Request) {
-		htmlContent, err := scalar.ApiReferenceHTML(&scalar.Options{
-			SpecURL: "./docs/swagger.json",
-			CustomOptions: scalar.CustomOptions{
-				PageTitle: "Test Kasir API",
-			},
-			DarkMode: true,
-		})
+	r.HandleFunc("GET /docs", h.index.Docs)
+	return r
+}
 
-		if err != nil {
-			fmt.Printf("%v", err)
-		}
-
-		_, err = fmt.Fprintln(w, htmlContent)
-		if err != nil {
-			return
-		}
-	})
+func (h *Router) RegisterIndex() *http.ServeMux {
+	r := http.NewServeMux()
 	r.HandleFunc("GET /", h.index.Index)
 	return r
 }

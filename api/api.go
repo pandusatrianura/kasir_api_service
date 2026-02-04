@@ -59,11 +59,13 @@ func (s *Server) Run() error {
 
 	r := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle)
 	routes := r.RegisterRoutes()
+	indexRoutes := r.RegisterIndex()
+
 	router := http.NewServeMux()
 	router.Handle("/api/", http.StripPrefix("/api", routes))
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	router.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
-	router.Handle("/", http.StripPrefix("", routes))
+	router.Handle("/", http.StripPrefix("", indexRoutes))
 
 	addr := fmt.Sprintf("%s%s", "0.0.0.0", s.addr)
 	log.Println("Starting server on", addr)
