@@ -13,6 +13,7 @@ import (
 	healthHandler "github.com/pandusatrianura/kasir_api_service/internal/health/delivery/http"
 	healthRepository "github.com/pandusatrianura/kasir_api_service/internal/health/repository"
 	healthService "github.com/pandusatrianura/kasir_api_service/internal/health/service"
+	indexHandler "github.com/pandusatrianura/kasir_api_service/internal/index/delivery/http"
 	productHandler "github.com/pandusatrianura/kasir_api_service/internal/products/delivery/http"
 	productRepository "github.com/pandusatrianura/kasir_api_service/internal/products/repository"
 	productService "github.com/pandusatrianura/kasir_api_service/internal/products/service"
@@ -54,10 +55,15 @@ func (s *Server) Run() error {
 	transactionsSvc := transactionsService.NewTransactionsService(transactionsRepo)
 	transactionsHandle := transactionsHandler.NewTransactionsHandler(transactionsSvc)
 
-	r := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle)
+	indexHandle := indexHandler.NewIndexHandler()
+
+	r := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle)
 	routes := r.RegisterRoutes()
 	router := http.NewServeMux()
 	router.Handle("/api/", http.StripPrefix("/api", routes))
+	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	router.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
+	router.Handle("/", http.StripPrefix("", routes))
 
 	addr := fmt.Sprintf("%s%s", "0.0.0.0", s.addr)
 	log.Println("Starting server on", addr)

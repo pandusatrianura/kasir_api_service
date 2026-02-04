@@ -6,6 +6,7 @@ import (
 
 	categoriesHandler "github.com/pandusatrianura/kasir_api_service/internal/categories/delivery/http"
 	healthHandler "github.com/pandusatrianura/kasir_api_service/internal/health/delivery/http"
+	indexHandler "github.com/pandusatrianura/kasir_api_service/internal/index/delivery/http"
 	productsHandler "github.com/pandusatrianura/kasir_api_service/internal/products/delivery/http"
 	transactionsHandler "github.com/pandusatrianura/kasir_api_service/internal/transactions/delivery/http"
 	"github.com/pandusatrianura/kasir_api_service/pkg/scalar"
@@ -16,14 +17,18 @@ type Router struct {
 	products     *productsHandler.ProductHandler
 	health       *healthHandler.HealthHandler
 	transactions *transactionsHandler.TransactionHandler
+	index        *indexHandler.IndexHandler
 }
 
-func NewRouter(categoriesHandler *categoriesHandler.CategoryHandler, productHandler *productsHandler.ProductHandler, healthHandler *healthHandler.HealthHandler, transactionHandler *transactionsHandler.TransactionHandler) *Router {
+func NewRouter(categoriesHandler *categoriesHandler.CategoryHandler, productHandler *productsHandler.ProductHandler,
+	healthHandler *healthHandler.HealthHandler, transactionHandler *transactionsHandler.TransactionHandler,
+	indexHandler *indexHandler.IndexHandler) *Router {
 	return &Router{
 		categories:   categoriesHandler,
 		products:     productHandler,
 		health:       healthHandler,
 		transactions: transactionHandler,
+		index:        indexHandler,
 	}
 }
 
@@ -63,5 +68,6 @@ func (h *Router) RegisterRoutes() *http.ServeMux {
 			return
 		}
 	})
+	r.HandleFunc("GET /", h.index.Index)
 	return r
 }

@@ -1,10 +1,6 @@
 <div align="center">
-<a href="https://github.com/Sumonta056/FixHub-Issue-Tracker-Website" target="blank">
 <img src="./assets/chatBot.png" width="90" alt="Logo" />
-</a>
-
 <h2> Project Name : Kasir API </h2>
-
 
 [![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white)](#)
 [![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=173647)](#)
