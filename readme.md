@@ -306,5 +306,5 @@ Please change the `{{url}}` to the URL of your deployed API.
 
    Public Domain:
    ```bash
-   https://kasir.pandusatrianura.cloud
+   https://kasir-api-service.pandusatrianura.cloud
    ```
