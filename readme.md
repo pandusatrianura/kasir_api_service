@@ -88,7 +88,13 @@
 
 The application provides several API endpoints for the functionalities mentioned above. Below are some key endpoints:
 
+### General
+- **Health Check API Endpoint**: `GET /api/health/service` 
+- **Health Check Database Endpoint**: `GET /api/health/db`
+- **Kasir API Docs Endpoint**: `GET /api/docs`
+
 ### Category
+- **Health Check Category API Endpoint**: `GET /api/categories/health`
 - **Ambil semua kategori**: `GET /categories`
 - **Tambah satu kategori**: `POST /categories`
 - **Update satu kategori**: `PUT /categories/{id}`
@@ -96,6 +102,7 @@ The application provides several API endpoints for the functionalities mentioned
 - **Hapus satu kategori**: `DELETE /categories/{id}`
 
 ### Product
+- **Health Check Product API Endpoint**: `GET /api/products/health`
 - **Ambil semua produk**: `GET /products`
 - **Tambah satu produk**: `POST /products`
 - **Update satu produk**: `PUT /products/{id}`
@@ -103,6 +110,7 @@ The application provides several API endpoints for the functionalities mentioned
 - **Hapus satu produk**: `DELETE /products/{id}`
 
 ### Product
+- **Health Check Transactions/Checkout API Endpoint**: `GET /api/transactions/health`
 - **Checkout transaksi**: `POST /transactions/checkout`
 
 ## 🛠️ Installation
