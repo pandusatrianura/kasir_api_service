@@ -14,11 +14,12 @@ func InitDatabase() (*DB, error) {
 	host := viper.GetString("DATABASE_HOST")
 	port := viper.GetInt("DATABASE_PORT")
 	dbname := viper.GetString("DATABASE_NAME")
+	sslmode := viper.GetString("DATABASE_SSL_MODE")
 	maxLifetimeConnection := viper.GetDuration("DATABASE_MAX_LIFETIME_CONNECTION")
 	maxIdleConnection := viper.GetInt("DATABASE_MAX_IDLE_CONNECTION")
 	maxOpenConnection := viper.GetInt("DATABASE_MAX_OPEN_CONNECTION")
 
-	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s", username, password, host, port, dbname)
+	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", username, password, host, port, dbname, sslmode)
 
 	database, err := Open("postgres", dsn)
 	if err != nil {
