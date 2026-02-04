@@ -300,7 +300,3 @@ Please change the `{{url}}` to the URL of your deployed API.
    ```bash
    https://kasir.pandusatrianura.cloud
    ```
-
-## 📜 License
-
-Distributed under the MIT License.
