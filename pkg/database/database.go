@@ -19,7 +19,7 @@ func InitDatabase() (*DB, error) {
 	maxIdleConnection := viper.GetInt("DATABASE_MAX_IDLE_CONNECTION")
 	maxOpenConnection := viper.GetInt("DATABASE_MAX_OPEN_CONNECTION")
 
-	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?%s", username, password, host, port, dbname, sslmode)
+	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=%s", username, password, host, port, dbname, sslmode)
 
 	database, err := Open("postgres", dsn)
 	if err != nil {
