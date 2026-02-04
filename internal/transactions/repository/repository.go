@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"errors"
 
 	productEntity "github.com/pandusatrianura/kasir_api_service/internal/products/entity"
@@ -43,11 +44,23 @@ func (t *TransactionsRepository) Checkout(requests []entity.CheckoutRequest) (*e
 		return nil, err
 	}
 
-	if detailProducts == nil {
+	if detailProducts == nil || len(detailProducts) == 0 {
 		return nil, errors.New("product not found")
 	}
 
 	for _, product := range detailProducts {
+		if product.ID == 0 {
+			return nil, errors.New("product not found")
+		}
+
+		if product.Stock < product.Quantity {
+			return nil, errors.New("stock not enough")
+		}
+
+		if product.Stock == 0 {
+			return nil, errors.New("stock is empty")
+		}
+
 		subTotal = product.Price * product.Quantity
 		totalAmount += subTotal
 
@@ -109,7 +122,15 @@ func (t *TransactionsRepository) getDetailProductByID(requests []entity.Checkout
 				return nil
 			}, request.ProductID)
 
-			return err
+			if err != nil {
+				return err
+			}
+
+			if errors.Is(sql.ErrNoRows, err) {
+				return errors.New("product not found")
+			}
+
+			return nil
 		})
 
 		if err != nil {

@@ -35,7 +35,11 @@ func (r *CategoryRepository) CreateCategory(category *entity.Category) error {
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(category.Name, category.Description, "now()", "now()")
-			return err
+			if err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		if err != nil {
@@ -45,7 +49,11 @@ func (r *CategoryRepository) CreateCategory(category *entity.Category) error {
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *CategoryRepository) UpdateCategory(id int64, category *entity.Category) error {
@@ -59,7 +67,11 @@ func (r *CategoryRepository) UpdateCategory(id int64, category *entity.Category)
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(category.Name, category.Description, "now()", id)
-			return err
+			if err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		if err != nil {
@@ -69,7 +81,11 @@ func (r *CategoryRepository) UpdateCategory(id int64, category *entity.Category)
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *CategoryRepository) DeleteCategory(id int64) error {
@@ -83,7 +99,10 @@ func (r *CategoryRepository) DeleteCategory(id int64) error {
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(id)
-			return err
+			if err != nil {
+				return err
+			}
+			return nil
 		})
 
 		if err != nil {
@@ -93,7 +112,11 @@ func (r *CategoryRepository) DeleteCategory(id int64) error {
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *CategoryRepository) GetCategoryByID(id int64) (*entity.ResponseCategory, error) {
@@ -115,7 +138,11 @@ func (r *CategoryRepository) GetCategoryByID(id int64) (*entity.ResponseCategory
 			return nil
 		}, id)
 
-		return err
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	if err != nil {
@@ -159,6 +186,10 @@ func (r *CategoryRepository) GetAllCategories() ([]entity.ResponseCategory, erro
 			categories = append(categories, category)
 			return nil
 		})
+
+		if err != nil {
+			return err
+		}
 
 		return err
 	})

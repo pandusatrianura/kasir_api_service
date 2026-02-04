@@ -37,7 +37,11 @@ func (r *ProductRepository) CreateProduct(product *entity.Product) error {
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(product.Name, product.Price, product.Stock, product.CategoryID, "now()", "now()")
-			return err
+			if err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		if err != nil {
@@ -47,7 +51,11 @@ func (r *ProductRepository) CreateProduct(product *entity.Product) error {
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *ProductRepository) UpdateProduct(id int64, product *entity.Product) error {
@@ -61,7 +69,11 @@ func (r *ProductRepository) UpdateProduct(id int64, product *entity.Product) err
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err := stmt.Exec(product.Name, product.Price, product.Stock, product.CategoryID, "now()", id)
-			return err
+			if err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		if err != nil {
@@ -71,7 +83,11 @@ func (r *ProductRepository) UpdateProduct(id int64, product *entity.Product) err
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *ProductRepository) UpdateStockByProductID(product *entity.Product) error {
@@ -85,7 +101,12 @@ func (r *ProductRepository) UpdateStockByProductID(product *entity.Product) erro
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err := stmt.Exec(product.Stock, "now()", product.ID)
-			return err
+
+			if err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		if err != nil {
@@ -95,7 +116,11 @@ func (r *ProductRepository) UpdateStockByProductID(product *entity.Product) erro
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *ProductRepository) DeleteProduct(id int64) error {
@@ -109,7 +134,11 @@ func (r *ProductRepository) DeleteProduct(id int64) error {
 	err = r.db.WithTx(func(tx *database.Tx) error {
 		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(id)
-			return err
+			if err != nil {
+				return err
+			}
+
+			return nil
 		})
 
 		if err != nil {
@@ -119,7 +148,11 @@ func (r *ProductRepository) DeleteProduct(id int64) error {
 		return nil
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *ProductRepository) GetAllProducts() ([]entity.ResponseProductWithCategories, error) {
@@ -143,7 +176,11 @@ func (r *ProductRepository) GetAllProducts() ([]entity.ResponseProductWithCatego
 			return nil
 		})
 
-		return err
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	if err != nil {
@@ -188,7 +225,11 @@ func (r *ProductRepository) GetProductByID(id int64) (*entity.ResponseProductWit
 			return nil
 		}, id)
 
-		return err
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	if err != nil {
@@ -234,7 +275,11 @@ func (r *ProductRepository) GetCategoryByID(id int64) (*entity.Category, error) 
 			return nil
 		}, id)
 
-		return err
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 	if err != nil {
