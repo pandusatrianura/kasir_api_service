@@ -21,6 +21,7 @@
 
 - [x] Session 1: https://docs.kodingworks.io/s/17137b9a-ed7a-4950-ba9e-eb11299531c2#h-%F0%9F%8E%AF-tugas
 - [x] Session 2: https://docs.kodingworks.io/s/a378a9fe-c0e0-4fa1-a896-43ae347a7b61
+- [ ] Session 3: To be updated
 
 ## 💡 Overview
 
@@ -47,6 +48,7 @@
    }
 }
 ```
+3. To be updated.
 
 ## ✨ Model
 
@@ -63,6 +65,21 @@
 - **Price**
 - **Stock**
 - **Category ID**
+- **Created At**
+- **Updated At**
+
+### Transaction
+- **ID**
+- **Total Amount**
+- **Created At**
+- **Updated At**
+
+### Transaction Detail
+- **ID**
+- **Transaction ID**
+- **Product ID**
+- **Quantity**
+- **Subtotal**
 - **Created At**
 - **Updated At**
 
@@ -83,6 +100,9 @@ The application provides several API endpoints for the functionalities mentioned
 - **Update satu produk**: `PUT /products/{id}`
 - **Ambil detail satu produk**: `GET /products/{id}`
 - **Hapus satu produk**: `DELETE /products/{id}`
+
+### Product
+- **Checkout transaksi**: `POST /transactions/checkout`
 
 ## 🛠️ Installation
 
@@ -198,6 +218,30 @@ The application provides several API endpoints for the functionalities mentioned
    ```bash
    curl --location --request DELETE '{{url}}/api/products/9'
    ```
+
+### Transactions
+
+1. Checkout Endpoint:
+   ```bash
+   curl --location '{{url}}/api/transactions/checkout' \
+   --header 'Content-Type: application/json' \
+   --data '{
+    "checkout" : [
+        {
+            "product_id" : 1,
+            "quantity": 5
+        },
+        {
+            "product_id" : 4,
+            "quantity": 2
+        },
+        {
+            "product_id" : 5,
+            "quantity": 5
+        }
+    ]
+   }'
+   ```
    
 **Note:** Replace `{{url}}` with the URL of your deployed API (see 📖 Hosted API).
 
@@ -207,7 +251,7 @@ Please change the `{{url}}` to the URL of your deployed API.
 
    Localhost:
    ```bash
-   http://localhost:8000
+   http://localhost:8080
    ```
    Public:
    ```bash
@@ -216,4 +260,4 @@ Please change the `{{url}}` to the URL of your deployed API.
 
 ## 📜 License
 
-Distributed under the MIT License. See [License](/LICENSE) for more information.
+Distributed under the MIT License.
