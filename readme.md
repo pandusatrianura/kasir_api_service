@@ -118,7 +118,21 @@ The application provides several API endpoints for the functionalities mentioned
    go mod tidy
    ```
 
-3. **Run the Application**:
+3. **Add .env file**
+   ```bash
+   PORT=8080
+   DATABASE_HOST="aws.supabase.com"
+   DATABASE_PORT=1234
+   DATABASE_USER="postgres"
+   DATABASE_PASSWORD="xxxx"
+   DATABASE_NAME="kasir-db"
+   DATABASE_SSL_MODE="disable"
+   DATABASE_MAX_LIFETIME_CONNECTION=30
+   DATABASE_MAX_IDLE_CONNECTION= 50
+   DATABASE_MAX_OPEN_CONNECTION= 100
+   ```
+
+4. **Run the Application**:
    ```bash
    go run main.go 
    ```
@@ -276,7 +290,13 @@ Please change the `{{url}}` to the URL of your deployed API.
    ```bash
    http://localhost:8080
    ```
-   Public:
+
+   Public URL:
+   ```bash
+   http://loki-kasir-api-service-a9hfrd-455a6b-203-194-115-248.traefik.me
+   ```
+
+   Public Domain:
    ```bash
    https://kasir.pandusatrianura.cloud
    ```
