@@ -44,25 +44,6 @@
       "response": []
     },
     {
-      "name": "Health Check - Categories",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{url}}/api/categories/health",
-          "host": [
-            "{{url}}"
-          ],
-          "path": [
-            "api",
-            "categories",
-            "health"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "name": "Health Check - Database",
       "request": {
         "method": "GET",
@@ -82,6 +63,25 @@
       "response": []
     },
     {
+      "name": "Health Check - Categories",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/categories/health",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "categories",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Health Check - Products",
       "request": {
         "method": "GET",
@@ -94,6 +94,25 @@
           "path": [
             "api",
             "products",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Health Check - Transactions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/transactions/health",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "transactions",
             "health"
           ]
         }

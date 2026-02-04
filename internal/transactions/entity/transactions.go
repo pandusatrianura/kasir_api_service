@@ -1,5 +1,10 @@
 package entity
 
+type HealthCheck struct {
+	Name      string `json:"name"`
+	IsHealthy bool   `json:"is_healthy"`
+}
+
 type Transaction struct {
 	ID          int    `json:"id"`
 	TotalAmount int    `json:"total_amount"`

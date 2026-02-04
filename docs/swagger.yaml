@@ -431,7 +431,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get health status of products API
+      description: Get health status of transactions/checkout API
       produces:
       - application/json
       responses:
@@ -446,7 +446,7 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Get health status of products API
+      summary: Get health status of transactions/checkout API
       tags:
       - products
   /api/transactions/checkout:

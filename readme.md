@@ -143,6 +143,23 @@ The application provides several API endpoints for the functionalities mentioned
 
 ## 📃 List of API Endpoints
 
+### General
+
+1. Kasir API Docs Endpoint:
+   ```bash
+   curl --location '{{url}}/api/docs'
+   ```
+   
+2. Health Check API Endpoint:
+    ```bash
+   curl --location '{{url}}/api/health/service'
+   ```
+
+3. Health Check Database Endpoint:
+    ```bash
+   curl --location '{{url}}/api/health/db'
+   ``` 
+
 ### Category
 
 1. Health Check Endpoint:
@@ -222,7 +239,12 @@ The application provides several API endpoints for the functionalities mentioned
 
 ### Transactions
 
-1. Checkout Endpoint:
+1. Health Check Endpoint:
+   ```bash
+   curl --location '{{url}}/api/transactions/health'
+   ```
+
+2. Checkout Endpoint:
    ```bash
    curl --location '{{url}}/api/transactions/checkout' \
    --header 'Content-Type: application/json' \

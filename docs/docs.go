@@ -442,7 +442,7 @@ const docTemplate = `{
         },
         "/api/products/health": {
             "get": {
-                "description": "Get health status of products API",
+                "description": "Get health status of transactions/checkout API",
                 "consumes": [
                     "application/json"
                 ],
@@ -452,7 +452,7 @@ const docTemplate = `{
                 "tags": [
                     "products"
                 ],
-                "summary": "Get health status of products API",
+                "summary": "Get health status of transactions/checkout API",
                 "responses": {
                     "200": {
                         "description": "OK",

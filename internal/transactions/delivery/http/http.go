@@ -2,7 +2,9 @@ package http
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	constants "github.com/pandusatrianura/kasir_api_service/constant"
 	"github.com/pandusatrianura/kasir_api_service/internal/transactions/entity"
@@ -18,10 +20,36 @@ func NewTransactionsHandler(service service.TransactionsService) *TransactionHan
 	return &TransactionHandler{service: service}
 }
 
+// HealthCheck godoc
+// @Summary Get health status of transactions/checkout API
+// @Description Get health status of transactions/checkout API
+// @Tags transactions
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 503 {object} map[string]string
+// @Router /api/transactions/health [get]
+func (h *TransactionHandler) API(w http.ResponseWriter, r *http.Request) {
+	var result response.APIResponse
+	svcHealthCheckResult := h.service.API()
+
+	if svcHealthCheckResult.IsHealthy {
+		result.Code = strconv.Itoa(constants.SuccessCode)
+		result.Message = fmt.Sprintf("%s is healthy", svcHealthCheckResult.Name)
+		response.WriteJSONResponse(w, http.StatusOK, result)
+		return
+	}
+
+	result.Code = strconv.Itoa(constants.ErrorCode)
+	result.Message = fmt.Sprintf("%s is not healthy", svcHealthCheckResult.Name)
+	response.WriteJSONResponse(w, http.StatusServiceUnavailable, result)
+	return
+}
+
 // Checkout godoc
 // @Summary Checkout products
 // @Description Checkout products
-// @Tags checkout
+// @Tags transactions
 // @Accept json
 // @Produce json
 // @Param checkout body entity.Checkout true "Checkout Data"

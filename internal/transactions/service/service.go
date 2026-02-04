@@ -7,6 +7,7 @@ import (
 
 type ITransactionsService interface {
 	Checkout([]entity.CheckoutRequest) (*entity.CheckoutResponse, error)
+	API() entity.HealthCheck
 }
 
 type TransactionsService struct {
@@ -15,6 +16,13 @@ type TransactionsService struct {
 
 func NewTransactionsService(repo repository.TransactionsRepository) TransactionsService {
 	return TransactionsService{transactionsRepository: repo}
+}
+
+func (t *TransactionsService) API() entity.HealthCheck {
+	return entity.HealthCheck{
+		Name:      "Transactions/Checkout API",
+		IsHealthy: true,
+	}
 }
 
 func (t *TransactionsService) Checkout(requests []entity.CheckoutRequest) (*entity.CheckoutResponse, error) {

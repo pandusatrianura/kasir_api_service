@@ -43,6 +43,7 @@ func (h *Router) RegisterRoutes() *http.ServeMux {
 	r.HandleFunc("GET /categories/{id}", h.categories.GetCategoryByID)
 	r.HandleFunc("PUT /categories/{id}", h.categories.UpdateCategory)
 	r.HandleFunc("DELETE /categories/{id}", h.categories.DeleteCategory)
+	r.HandleFunc("GET /transactions/health", h.transactions.API)
 	r.HandleFunc("POST /transactions/checkout", h.transactions.Checkout)
 	r.HandleFunc("GET /docs", func(w http.ResponseWriter, r *http.Request) {
 		htmlContent, err := scalar.ApiReferenceHTML(&scalar.Options{
