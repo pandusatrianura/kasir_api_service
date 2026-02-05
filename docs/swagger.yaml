@@ -485,6 +485,28 @@ paths:
       summary: Get sales report
       tags:
       - reports
+  /api/reports/health:
+    get:
+      consumes:
+      - application/json
+      description: Get health status of reports API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get health status of reports API
+      tags:
+      - reports
   /api/transactions/checkout:
     post:
       consumes:
