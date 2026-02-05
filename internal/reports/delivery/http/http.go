@@ -26,12 +26,12 @@ func NewReportHandler(service service.ReportService) *ReportHandler {
 // HealthCheck godoc
 // @Summary Get health status of reports API
 // @Description Get health status of reports API
-// @Tags transactions
+// @Tags reports
 // @Accept json
 // @Produce json
 // @Success 200 {object} map[string]interface{}
 // @Failure 503 {object} map[string]string
-// @Router /api/transactions/health [get]
+// @Router /api/reports/health [get]
 func (h *ReportHandler) API(w http.ResponseWriter, r *http.Request) {
 	var result response.APIResponse
 	svcHealthCheckResult := h.service.API()

@@ -327,11 +327,11 @@ The application provides several API endpoints for the functionalities mentioned
    curl --location '{{url}}/api/reports/health'
    ```
 
-2. Show today sales report:
+2. Show Today Sales Report Endpoint:
    ```bash
    curl --location '{{url}}/api/reports'
    ```
-3. Show sales report with date range:
+3. Show Sales Report With Date Range Endpoint:
    ```bash
    curl --location '{{url}}/api/reports?start_date=2026-02-04&end_date=2026-02-05'
    ```
