@@ -66,7 +66,7 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 		return nil, err
 	}
 
-	query = "SELECT b.name, SUM(a.quantity) AS sum_quantity FROM transaction_details a JOIN products b ON a.product_id = b.id WHERE a.created_at >= $1 AND a.created_at < $2 GROUP BY a.product_id, b.name ORDER BY sum_quantity DESC;"
+	query = "SELECT c.name, SUM(a.quantity) AS sum_quantity FROM transaction_details a JOIN transactions b ON a.transaction_id = b.id JOIN products c ON a.product_id = c.id WHERE b.created_at >= $1 AND b.created_at < $2 GROUP BY a.product_id, c.name ORDER BY sum_quantity DESC;"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
 		err = stmt.Query(func(rows *database.Rows) error {
