@@ -6,7 +6,7 @@ import (
 )
 
 type HealthService struct {
-	healthRepository repository.HealthRepository
+	healthRepository repository.IHealthRepository
 }
 
 type IHealthService interface {
@@ -14,8 +14,8 @@ type IHealthService interface {
 	DB() (entity.HealthCheck, error)
 }
 
-func NewHealthService(healthRepo repository.HealthRepository) HealthService {
-	return HealthService{healthRepository: healthRepo}
+func NewHealthService(healthRepo repository.IHealthRepository) IHealthService {
+	return &HealthService{healthRepository: healthRepo}
 }
 
 func (h *HealthService) API() entity.HealthCheck {

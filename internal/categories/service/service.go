@@ -8,7 +8,7 @@ import (
 )
 
 type CategoryService struct {
-	categoryRepository repository.CategoryRepository
+	categoryRepository repository.ICategoryRepository
 }
 
 type ICategoryService interface {
@@ -20,8 +20,8 @@ type ICategoryService interface {
 	API() entity.HealthCheck
 }
 
-func NewCategoryService(categoryRepository repository.CategoryRepository) CategoryService {
-	return CategoryService{categoryRepository: categoryRepository}
+func NewCategoryService(categoryRepository repository.ICategoryRepository) ICategoryService {
+	return &CategoryService{categoryRepository: categoryRepository}
 }
 
 func (s *CategoryService) API() entity.HealthCheck {

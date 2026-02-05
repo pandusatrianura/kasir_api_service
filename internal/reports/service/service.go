@@ -11,11 +11,11 @@ type IReportService interface {
 }
 
 type ReportService struct {
-	transactionsRepository repository.ReportsRepository
+	transactionsRepository repository.IReportsRepository
 }
 
-func NewReportService(repo repository.ReportsRepository) ReportService {
-	return ReportService{transactionsRepository: repo}
+func NewReportService(repo repository.IReportsRepository) IReportService {
+	return &ReportService{transactionsRepository: repo}
 }
 
 func (t *ReportService) API() entity.HealthCheck {

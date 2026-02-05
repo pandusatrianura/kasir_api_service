@@ -11,16 +11,16 @@ import (
 )
 
 type IReportsRepository interface {
-	Report(startDate string, endDate string) ([]entity.ReportTransaction, error)
+	Report(startDate string, endDate string) (*entity.ReportTransaction, error)
 }
 
 type ReportsRepository struct {
 	db          *database.DB
-	productRepo productRepository.ProductRepository
+	productRepo productRepository.IProductRepository
 }
 
-func NewReportsRepository(db *database.DB, productRepository productRepository.ProductRepository) ReportsRepository {
-	return ReportsRepository{
+func NewReportsRepository(db *database.DB, productRepository productRepository.IProductRepository) IReportsRepository {
+	return &ReportsRepository{
 		db:          db,
 		productRepo: productRepository,
 	}

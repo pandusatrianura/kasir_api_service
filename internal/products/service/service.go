@@ -8,7 +8,7 @@ import (
 )
 
 type ProductService struct {
-	productRepository repository.ProductRepository
+	productRepository repository.IProductRepository
 }
 
 type IProductService interface {
@@ -20,8 +20,8 @@ type IProductService interface {
 	API() entity.HealthCheck
 }
 
-func NewProductService(productRepository repository.ProductRepository) ProductService {
-	return ProductService{productRepository: productRepository}
+func NewProductService(productRepository repository.IProductRepository) IProductService {
+	return &ProductService{productRepository: productRepository}
 }
 
 func (s *ProductService) API() entity.HealthCheck {

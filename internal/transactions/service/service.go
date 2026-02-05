@@ -11,11 +11,11 @@ type ITransactionsService interface {
 }
 
 type TransactionsService struct {
-	transactionsRepository repository.TransactionsRepository
+	transactionsRepository repository.ITransactionsRepository
 }
 
-func NewTransactionsService(repo repository.TransactionsRepository) TransactionsService {
-	return TransactionsService{transactionsRepository: repo}
+func NewTransactionsService(repo repository.ITransactionsRepository) ITransactionsService {
+	return &TransactionsService{transactionsRepository: repo}
 }
 
 func (t *TransactionsService) API() entity.HealthCheck {

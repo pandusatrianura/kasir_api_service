@@ -14,10 +14,10 @@ import (
 )
 
 type ReportHandler struct {
-	service service.ReportService
+	service service.IReportService
 }
 
-func NewReportHandler(service service.ReportService) *ReportHandler {
+func NewReportHandler(service service.IReportService) *ReportHandler {
 	return &ReportHandler{
 		service: service,
 	}

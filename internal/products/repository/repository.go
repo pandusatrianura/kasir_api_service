@@ -22,8 +22,8 @@ type ProductRepository struct {
 	db *database.DB
 }
 
-func NewProductRepository(db *database.DB) ProductRepository {
-	return ProductRepository{db: db}
+func NewProductRepository(db *database.DB) IProductRepository {
+	return &ProductRepository{db: db}
 }
 
 func (r *ProductRepository) CreateProduct(product *entity.Product) error {
@@ -161,26 +161,34 @@ func (r *ProductRepository) GetAllProducts(name string) ([]entity.ResponseProduc
 		products          []entity.ProductWithCategories
 		productCategories []entity.ResponseProductWithCategories
 		err               error
-		args              []interface{}
+		args              string
 	)
 
 	query = "SELECT products.id, products.name, products.price, products.stock, products.created_at, products.updated_at, categories.id as category_id, categories.name as category_name FROM products JOIN categories ON products.category_id = categories.id"
 
-	if name != "" {
-		query += " WHERE p.name ILIKE $1"
-		args = append(args, "%"+name+"%")
-	}
-
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
-			var product entity.ProductWithCategories
-			if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
-				return err
-			}
+		if name != "" {
+			args = "%" + name + "%"
+			err = stmt.Query(func(rows *database.Rows) error {
+				var product entity.ProductWithCategories
+				if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
+					return err
+				}
 
-			products = append(products, product)
-			return nil
-		})
+				products = append(products, product)
+				return nil
+			}, args)
+		} else {
+			err = stmt.Query(func(rows *database.Rows) error {
+				var product entity.ProductWithCategories
+				if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
+					return err
+				}
+
+				products = append(products, product)
+				return nil
+			})
+		}
 
 		if err != nil {
 			return err

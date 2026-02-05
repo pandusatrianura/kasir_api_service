@@ -12,8 +12,8 @@ type IHealthRepository interface {
 	DB() error
 }
 
-func NewHealthRepository(db *database.DB) HealthRepository {
-	return HealthRepository{db: db}
+func NewHealthRepository(db *database.DB) IHealthRepository {
+	return &HealthRepository{db: db}
 }
 
 func (h *HealthRepository) DB() error {

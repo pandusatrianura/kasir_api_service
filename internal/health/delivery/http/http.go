@@ -11,10 +11,10 @@ import (
 )
 
 type HealthHandler struct {
-	service service.HealthService
+	service service.IHealthService
 }
 
-func NewHealthHandler(service service.HealthService) *HealthHandler {
+func NewHealthHandler(service service.IHealthService) *HealthHandler {
 	return &HealthHandler{service: service}
 }
 

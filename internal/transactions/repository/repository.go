@@ -17,11 +17,11 @@ type ITransactionsRepository interface {
 
 type TransactionsRepository struct {
 	db          *database.DB
-	productRepo productRepository.ProductRepository
+	productRepo productRepository.IProductRepository
 }
 
-func NewTransactionsRepository(db *database.DB, productRepository productRepository.ProductRepository) TransactionsRepository {
-	return TransactionsRepository{
+func NewTransactionsRepository(db *database.DB, productRepository productRepository.IProductRepository) ITransactionsRepository {
+	return &TransactionsRepository{
 		db:          db,
 		productRepo: productRepository,
 	}

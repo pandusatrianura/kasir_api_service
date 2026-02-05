@@ -21,8 +21,8 @@ type CategoryRepository struct {
 	db *database.DB
 }
 
-func NewCategoryRepository(db *database.DB) CategoryRepository {
-	return CategoryRepository{db: db}
+func NewCategoryRepository(db *database.DB) ICategoryRepository {
+	return &CategoryRepository{db: db}
 }
 
 func (r *CategoryRepository) CreateCategory(category *entity.Category) error {
