@@ -13,7 +13,7 @@ type IProductRepository interface {
 	UpdateProduct(id int64, product *entity.Product) error
 	DeleteProduct(id int64) error
 	GetProductByID(id int64) (*entity.ResponseProductWithCategories, error)
-	GetAllProducts() ([]entity.ResponseProductWithCategories, error)
+	GetAllProducts(name string) ([]entity.ResponseProductWithCategories, error)
 	GetCategoryByID(id int64) (*entity.Category, error)
 	UpdateStockByProductID(product *entity.Product) error
 }
@@ -155,15 +155,21 @@ func (r *ProductRepository) DeleteProduct(id int64) error {
 	return nil
 }
 
-func (r *ProductRepository) GetAllProducts() ([]entity.ResponseProductWithCategories, error) {
+func (r *ProductRepository) GetAllProducts(name string) ([]entity.ResponseProductWithCategories, error) {
 	var (
 		query             string
 		products          []entity.ProductWithCategories
 		productCategories []entity.ResponseProductWithCategories
 		err               error
+		args              []interface{}
 	)
 
 	query = "SELECT products.id, products.name, products.price, products.stock, products.created_at, products.updated_at, categories.id as category_id, categories.name as category_name FROM products JOIN categories ON products.category_id = categories.id"
+
+	if name != "" {
+		query += " WHERE p.name ILIKE $1"
+		args = append(args, "%"+name+"%")
+	}
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
 		err = stmt.Query(func(rows *database.Rows) error {

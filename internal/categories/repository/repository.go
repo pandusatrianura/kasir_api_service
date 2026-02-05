@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 
+	constants "github.com/pandusatrianura/kasir_api_service/constant"
 	"github.com/pandusatrianura/kasir_api_service/internal/categories/entity"
 	"github.com/pandusatrianura/kasir_api_service/pkg/database"
 	"github.com/pandusatrianura/kasir_api_service/pkg/datetime"
@@ -150,7 +151,7 @@ func (r *CategoryRepository) GetCategoryByID(id int64) (*entity.ResponseCategory
 	}
 
 	if category.ID == 0 {
-		return nil, errors.New("category not found")
+		return nil, errors.New(constants.ErrCategoryNotFound)
 	}
 
 	createdAt, _ := datetime.ParseTime(category.CreatedAt)

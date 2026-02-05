@@ -10,4 +10,12 @@ const (
 	ErrInvalidProductID       = "invalid product id"
 	ErrInvalidProductRequest  = "invalid product request"
 	ErrInvalidCheckoutRequest = "invalid checkout request"
+	ErrTransactionNotFound    = "transactions not found"
+	ErrRequiredDate           = "start date and end date are required"
+	ErrStarDate               = "start date cannot be greater than end date"
+	ErrReportRequest          = "invalid report request"
+	ErrProductNotFound        = "product not found"
+	ErrStockNotEnough         = "stock not enough"
+	ErrStockEmpty             = "stock is empty"
+	ErrCategoryNotFound       = "category not found"
 )

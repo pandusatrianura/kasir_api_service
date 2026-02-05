@@ -20,3 +20,15 @@ func ParseTime(timeString string) (time.Time, error) {
 
 	return parsedTime.In(loc), nil
 }
+
+func ParseUTC(timeString string) (string, error) {
+	layout := "2006-01-02 15:04:05"
+
+	parsedTime, err := time.Parse(layout, timeString)
+	if err != nil {
+		return "", err
+	}
+
+	utcTime := parsedTime.Add(-7 * time.Hour).Format(layout)
+	return utcTime, nil
+}

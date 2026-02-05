@@ -17,7 +17,7 @@
 
 - [x] Session 1: https://docs.kodingworks.io/s/17137b9a-ed7a-4950-ba9e-eb11299531c2#h-%F0%9F%8E%AF-tugas
 - [x] Session 2: https://docs.kodingworks.io/s/a378a9fe-c0e0-4fa1-a896-43ae347a7b61
-- [ ] Session 3: To be updated
+- [x] Session 3: https://docs.kodingworks.io/s/820d006c-a994-4487-b993-bc3b4171a35d
 
 ## 💡 Overview
 
@@ -45,7 +45,33 @@
 }
 ```
 ### Task Session 3
-1. To be updated.
+1. Perbaiki repositories/transaction_repository.go ketika insert transaction details ke db.
+   ```bash
+	  for i := range details {
+		  details[i].TransactionID = transactionID
+		  _, err = tx.Exec("INSERT INTO transaction_details (transaction_id, product_id, quantity, subtotal) VALUES ($1, $2, $3, $4)", transactionID, details[i].ProductID, details[i].Quantity, details[i].Subtotal)
+		  if err != nil {
+			   return nil, err
+		  }
+	  }
+   ```
+2. Sales Summary Hari Ini
+   ```bash
+   GET /api/report/hari-ini
+
+   Response:
+   {
+      "total_revenue": 45000,
+      "total_transaksi": 5,
+      "produk_terlaris": { 
+        "nama": "Indomie Goreng", 
+        "qty_terjual": 12 
+      }
+   }
+   
+   Optional Challenge
+   - Get api/report?start_date=2026-01-01&end_date=2026-02-01
+   ```
 
 ## ✨ Model
 
@@ -80,6 +106,11 @@
 - **Created At**
 - **Updated At**
 
+### Report
+- **Total Revenue**
+- **Total Transaction**
+- **Product with Most Sales**
+
 ## 📖 API Endpoints
 
 The application provides several API endpoints for the functionalities mentioned above. Below are some key endpoints:
@@ -91,23 +122,28 @@ The application provides several API endpoints for the functionalities mentioned
 
 ### Category
 - **Health Check Category API Endpoint**: `GET /api/categories/health`
-- **Ambil semua kategori**: `GET /categories`
-- **Tambah satu kategori**: `POST /categories`
-- **Update satu kategori**: `PUT /categories/{id}`
-- **Ambil detail satu kategori**: `GET /categories/{id}`
-- **Hapus satu kategori**: `DELETE /categories/{id}`
+- **Ambil semua kategori**: `GET /api/categories`
+- **Tambah satu kategori**: `POST /api/categories`
+- **Update satu kategori**: `PUT /api/categories/{id}`
+- **Ambil detail satu kategori**: `GET /api/categories/{id}`
+- **Hapus satu kategori**: `DELETE /api/categories/{id}`
 
 ### Product
 - **Health Check Product API Endpoint**: `GET /api/products/health`
-- **Ambil semua produk**: `GET /products`
-- **Tambah satu produk**: `POST /products`
-- **Update satu produk**: `PUT /products/{id}`
-- **Ambil detail satu produk**: `GET /products/{id}`
-- **Hapus satu produk**: `DELETE /products/{id}`
+- **Ambil semua produk**: `GET /api/products`
+- **Tambah satu produk**: `POST /api/products`
+- **Update satu produk**: `PUT /api/products/{id}`
+- **Ambil detail satu produk**: `GET /api/products/{id}`
+- **Hapus satu produk**: `DELETE /api/products/{id}`
 
-### Product
+### Transaction / Checkout
 - **Health Check Transactions/Checkout API Endpoint**: `GET /api/transactions/health`
-- **Checkout transaksi**: `POST /transactions/checkout`
+- **Checkout transaksi**: `POST /api/transactions/checkout`
+
+### Report
+- **Health Check Report API Endpoint**: `GET /api/reports/health`
+- **Menampilkan laporan penjualan hari ini**: `POST /api/reports`
+- **Menampilkan laporan penjualan dengan tanggal tertentu**: `POST /api/reports?start_date=2026-02-04&end_date=2026-02-05`
 
 ## 🛠️ Installation
 
@@ -282,6 +318,22 @@ The application provides several API endpoints for the functionalities mentioned
         }
     ]
    }'
+   ```
+   
+### Reports
+
+1. Health Check Endpoint:
+   ```bash
+   curl --location '{{url}}/api/reports/health'
+   ```
+
+2. Show today sales report:
+   ```bash
+   curl --location '{{url}}/api/reports'
+   ```
+3. Show sales report with date range:
+   ```bash
+   curl --location '{{url}}/api/reports?start_date=2026-02-04&end_date=2026-02-05'
    ```
    
 **Note:** Replace `{{url}}` with the URL of your deployed API (see 📖 Hosted API).

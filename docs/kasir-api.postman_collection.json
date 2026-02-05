@@ -120,6 +120,25 @@
       "response": []
     },
     {
+      "name": "Health Check - Reports",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/reports/health",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Display All Categories",
       "request": {
         "method": "GET",
@@ -348,7 +367,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"checkout\" : [\n        {\n            \"product_id\" : 1,\n            \"quantity\": 5\n        },\n        {\n            \"product_id\" : 4,\n            \"quantity\": 2\n        },\n        {\n            \"product_id\" : 5,\n            \"quantity\": 5\n        }\n    ]\n}",
+          "raw": "{\n    \"checkout\" : [\n        {\n            \"product_id\" : 1,\n            \"quantity\": 5\n        },\n        {\n            \"product_id\" : 4,\n            \"quantity\": 5\n        }\n    ]\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -364,6 +383,52 @@
             "api",
             "transactions",
             "checkout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Report With Date",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/reports?start_date=2026-02-06&end_date=2026-02-07",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "reports"
+          ],
+          "query": [
+            {
+              "key": "start_date",
+              "value": "2026-02-06"
+            },
+            {
+              "key": "end_date",
+              "value": "2026-02-07"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Report",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/reports",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "reports"
           ]
         }
       },

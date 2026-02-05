@@ -7,6 +7,7 @@ import (
 	healthHandler "github.com/pandusatrianura/kasir_api_service/internal/health/delivery/http"
 	indexHandler "github.com/pandusatrianura/kasir_api_service/internal/index/delivery/http"
 	productsHandler "github.com/pandusatrianura/kasir_api_service/internal/products/delivery/http"
+	reportHandler "github.com/pandusatrianura/kasir_api_service/internal/reports/delivery/http"
 	transactionsHandler "github.com/pandusatrianura/kasir_api_service/internal/transactions/delivery/http"
 )
 
@@ -16,17 +17,19 @@ type Router struct {
 	health       *healthHandler.HealthHandler
 	transactions *transactionsHandler.TransactionHandler
 	index        *indexHandler.IndexHandler
+	report       *reportHandler.ReportHandler
 }
 
 func NewRouter(categoriesHandler *categoriesHandler.CategoryHandler, productHandler *productsHandler.ProductHandler,
 	healthHandler *healthHandler.HealthHandler, transactionHandler *transactionsHandler.TransactionHandler,
-	indexHandler *indexHandler.IndexHandler) *Router {
+	indexHandler *indexHandler.IndexHandler, reportHandler *reportHandler.ReportHandler) *Router {
 	return &Router{
 		categories:   categoriesHandler,
 		products:     productHandler,
 		health:       healthHandler,
 		transactions: transactionHandler,
 		index:        indexHandler,
+		report:       reportHandler,
 	}
 }
 
@@ -48,6 +51,8 @@ func (h *Router) RegisterRoutes() *http.ServeMux {
 	r.HandleFunc("DELETE /categories/{id}", h.categories.DeleteCategory)
 	r.HandleFunc("GET /transactions/health", h.transactions.API)
 	r.HandleFunc("POST /transactions/checkout", h.transactions.Checkout)
+	r.HandleFunc("GET /reports/health", h.report.API)
+	r.HandleFunc("GET /reports", h.report.Report)
 	r.HandleFunc("GET /docs", h.index.Docs)
 	return r
 }

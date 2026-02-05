@@ -17,9 +17,13 @@ import (
 	productHandler "github.com/pandusatrianura/kasir_api_service/internal/products/delivery/http"
 	productRepository "github.com/pandusatrianura/kasir_api_service/internal/products/repository"
 	productService "github.com/pandusatrianura/kasir_api_service/internal/products/service"
+	reportHandler "github.com/pandusatrianura/kasir_api_service/internal/reports/delivery/http"
+	reportRepository "github.com/pandusatrianura/kasir_api_service/internal/reports/repository"
+	reportService "github.com/pandusatrianura/kasir_api_service/internal/reports/service"
 	transactionsHandler "github.com/pandusatrianura/kasir_api_service/internal/transactions/delivery/http"
 	transactionsRepository "github.com/pandusatrianura/kasir_api_service/internal/transactions/repository"
 	transactionsService "github.com/pandusatrianura/kasir_api_service/internal/transactions/service"
+
 	"github.com/pandusatrianura/kasir_api_service/pkg/database"
 )
 
@@ -55,9 +59,13 @@ func (s *Server) Run() error {
 	transactionsSvc := transactionsService.NewTransactionsService(transactionsRepo)
 	transactionsHandle := transactionsHandler.NewTransactionsHandler(transactionsSvc)
 
+	reportsRepo := reportRepository.NewReportsRepository(s.db, productsRepo)
+	reportsService := reportService.NewReportService(reportsRepo)
+	reportsHandle := reportHandler.NewReportHandler(reportsService)
+
 	indexHandle := indexHandler.NewIndexHandler()
 
-	r := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle)
+	r := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle, reportsHandle)
 	routes := r.RegisterRoutes()
 	indexRoutes := r.RegisterIndex()
 

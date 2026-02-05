@@ -42,12 +42,14 @@ type CheckoutProductDetail struct {
 }
 
 type CheckoutProduct struct {
-	ID           int    `json:"product_id"`
-	Name         string `json:"product_name"`
-	Quantity     int    `json:"quantity"`
-	Subtotal     int    `json:"subtotal"`
-	CategoryID   int    `json:"category_id"`
-	CategoryName string `json:"category_name"`
+	ProductID           int    `json:"product_id"`
+	TransactionDetailID int    `json:"transaction_detail_id"`
+	TransactionID       int    `json:"transaction_id"`
+	Name                string `json:"product_name"`
+	Quantity            int    `json:"quantity"`
+	Subtotal            int    `json:"subtotal"`
+	CategoryID          int    `json:"category_id"`
+	CategoryName        string `json:"category_name"`
 }
 
 type CheckoutResponse struct {

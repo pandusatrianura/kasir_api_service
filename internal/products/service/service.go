@@ -16,7 +16,7 @@ type IProductService interface {
 	UpdateProduct(id int64, product *entity.RequestProduct) error
 	DeleteProduct(id int64) error
 	GetProductByID(id int64) (*entity.ResponseProductWithCategories, error)
-	GetAllProducts() ([]entity.ResponseProductWithCategories, error)
+	GetAllProducts(name string) ([]entity.ResponseProductWithCategories, error)
 	API() entity.HealthCheck
 }
 
@@ -82,6 +82,6 @@ func (s *ProductService) GetProductByID(id int64) (*entity.ResponseProductWithCa
 	return result, err
 }
 
-func (s *ProductService) GetAllProducts() ([]entity.ResponseProductWithCategories, error) {
-	return s.productRepository.GetAllProducts()
+func (s *ProductService) GetAllProducts(name string) ([]entity.ResponseProductWithCategories, error) {
+	return s.productRepository.GetAllProducts(name)
 }

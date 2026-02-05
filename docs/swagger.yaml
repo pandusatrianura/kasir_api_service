@@ -270,6 +270,11 @@ paths:
       consumes:
       - application/json
       description: Get all products
+      parameters:
+      - description: Product's name
+        in: query
+        name: name
+        type: string
       produces:
       - application/json
       responses:
@@ -431,7 +436,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get health status of transactions/checkout API
+      description: Get health status of products API
       produces:
       - application/json
       responses:
@@ -446,9 +451,40 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Get health status of transactions/checkout API
+      summary: Get health status of products API
       tags:
       - products
+  /api/reports:
+    get:
+      consumes:
+      - application/json
+      description: Get sales report
+      parameters:
+      - description: Start Date
+        in: query
+        name: start_date
+        type: string
+      - description: End Date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get sales report
+      tags:
+      - reports
   /api/transactions/checkout:
     post:
       consumes:
@@ -483,5 +519,27 @@ paths:
             type: object
       summary: Checkout products
       tags:
-      - checkout
+      - transactions
+  /api/transactions/health:
+    get:
+      consumes:
+      - application/json
+      description: Get health status of transactions/checkout API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "503":
+          description: Service Unavailable
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get health status of transactions/checkout API
+      tags:
+      - transactions
 swagger: "2.0"

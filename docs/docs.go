@@ -369,6 +369,14 @@ const docTemplate = `{
                     "products"
                 ],
                 "summary": "Get all products",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product's name",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -442,7 +450,7 @@ const docTemplate = `{
         },
         "/api/products/health": {
             "get": {
-                "description": "Get health status of transactions/checkout API",
+                "description": "Get health status of products API",
                 "consumes": [
                     "application/json"
                 ],
@@ -452,7 +460,7 @@ const docTemplate = `{
                 "tags": [
                     "products"
                 ],
-                "summary": "Get health status of transactions/checkout API",
+                "summary": "Get health status of products API",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -631,6 +639,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/reports": {
+            "get": {
+                "description": "Get sales report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Get sales report",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start Date",
+                        "name": "start_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "End Date",
+                        "name": "end_date",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/transactions/checkout": {
             "post": {
                 "description": "Checkout products",
@@ -641,7 +696,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "checkout"
+                    "transactions"
                 ],
                 "summary": "Checkout products",
                 "parameters": [
@@ -674,6 +729,39 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transactions/health": {
+            "get": {
+                "description": "Get health status of transactions/checkout API",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Get health status of transactions/checkout API",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "503": {
+                        "description": "Service Unavailable",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
