@@ -46,6 +46,11 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 		return nil, err
 	}
 
+	soldsProduct = r.findMostSoldProducts(soldsProduct)
+	if soldsProduct == nil {
+		soldsProduct = []entity.MostSoldProduct{}
+	}
+
 	report := entity.ReportTransaction{
 		TotalRevenue:      int64(totalRevenue),
 		TotalTransactions: totalTransaction,
@@ -135,4 +140,39 @@ func (r *ReportsRepository) getMostSoldProduct(startDate string, endDate string)
 	}
 
 	return soldsProduct, nil
+}
+
+func (r *ReportsRepository) findMostSoldProducts(products []entity.MostSoldProduct) []entity.MostSoldProduct {
+	var (
+		prods []entity.MostSoldProduct
+	)
+
+	if len(products) == 0 {
+		return nil
+	}
+
+	limitMaxProdSold := r.limitMaxProdSold(products)
+
+	for i := 0; i < len(products); i++ {
+		if products[i].QtySold > limitMaxProdSold {
+			prod := products[i]
+			prods = append(prods, prod)
+		} else if products[i].QtySold == limitMaxProdSold {
+			prods = append(prods, products[i])
+		}
+	}
+
+	return prods
+}
+
+func (r *ReportsRepository) limitMaxProdSold(products []entity.MostSoldProduct) int {
+	maxObj := products[0]
+
+	for _, something := range products {
+		if something.QtySold > maxObj.QtySold {
+			maxObj = something
+		}
+	}
+
+	return maxObj.QtySold
 }

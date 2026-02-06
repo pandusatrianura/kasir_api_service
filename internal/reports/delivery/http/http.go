@@ -3,6 +3,7 @@ package http
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -91,6 +92,8 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrReportRequest, errors.New(constants.ErrStarDate))
 		return
 	}
+
+	log.Printf("Search report with start date: %v until end date: %v, current UTC Time: %v", startUTC, endUTC, time.Now().UTC())
 
 	report, err := h.service.Report(startUTC, endUTC)
 	if err != nil {
