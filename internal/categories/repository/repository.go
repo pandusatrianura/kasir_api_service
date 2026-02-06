@@ -27,27 +27,17 @@ func NewCategoryRepository(db *database.DB) ICategoryRepository {
 
 func (r *CategoryRepository) CreateCategory(category *entity.Category) error {
 	var (
-		query string
 		err   error
+		query string
 	)
 
 	query = "INSERT INTO categories (name, description, created_at, updated_at) VALUES ($1, $2, $3, $4)"
 
 	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(category.Name, category.Description, "now()", "now()")
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
-		if err != nil {
 			return err
-		}
-
-		return nil
+		})
 	})
 
 	if err != nil {
@@ -59,27 +49,18 @@ func (r *CategoryRepository) CreateCategory(category *entity.Category) error {
 
 func (r *CategoryRepository) UpdateCategory(id int64, category *entity.Category) error {
 	var (
-		query string
 		err   error
+		query string
 	)
 
 	query = "UPDATE categories SET name = $1, description = $2, updated_at = $3 WHERE id = $4"
 
 	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(category.Name, category.Description, "now()", id)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
-		if err != nil {
 			return err
-		}
 
-		return nil
+		})
 	})
 
 	if err != nil {
@@ -98,19 +79,11 @@ func (r *CategoryRepository) DeleteCategory(id int64) error {
 	query = "DELETE FROM categories WHERE id = $1"
 
 	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(id)
-			if err != nil {
-				return err
-			}
-			return nil
-		})
-
-		if err != nil {
 			return err
-		}
 
-		return nil
+		})
 	})
 
 	if err != nil {
@@ -131,19 +104,11 @@ func (r *CategoryRepository) GetCategoryByID(id int64) (*entity.ResponseCategory
 	query = "SELECT id, name, description, created_at, updated_at FROM categories WHERE id = $1"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
-			if err := rows.Scan(&category.ID, &category.Name, &category.Description, &category.CreatedAt, &category.UpdatedAt); err != nil {
-				return err
-			}
-
-			return nil
-		}, id)
-
-		if err != nil {
-			return err
+		scanFn := func(rows *database.Rows) error {
+			return rows.Scan(&category.ID, &category.Name, &category.Description, &category.CreatedAt, &category.UpdatedAt)
 		}
 
-		return nil
+		return stmt.Query(scanFn, id)
 	})
 
 	if err != nil {
@@ -178,7 +143,7 @@ func (r *CategoryRepository) GetAllCategories() ([]entity.ResponseCategory, erro
 	query = "SELECT id, name, description, created_at, updated_at FROM categories"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
+		scanFn := func(rows *database.Rows) error {
 			var category entity.Category
 			if err := rows.Scan(&category.ID, &category.Name, &category.Description, &category.CreatedAt, &category.UpdatedAt); err != nil {
 				return err
@@ -186,13 +151,9 @@ func (r *CategoryRepository) GetAllCategories() ([]entity.ResponseCategory, erro
 
 			categories = append(categories, category)
 			return nil
-		})
-
-		if err != nil {
-			return err
 		}
 
-		return err
+		return stmt.Query(scanFn)
 	})
 
 	if err != nil {

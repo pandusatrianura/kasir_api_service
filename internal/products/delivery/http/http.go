@@ -189,6 +189,7 @@ func (h *ProductHandler) GetProductByID(w http.ResponseWriter, r *http.Request) 
 // @Router /api/products [get]
 func (h *ProductHandler) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
+
 	products, err := h.service.GetAllProducts(name)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "Products retrieved failed", err)

@@ -131,6 +131,7 @@ The application provides several API endpoints for the functionalities mentioned
 ### Product
 - **Health Check Product API Endpoint**: `GET /api/products/health`
 - **Ambil semua produk**: `GET /api/products`
+- **Cari produk berdasarkan nama produk**: `GET /api/products?name=bawang`
 - **Tambah satu produk**: `POST /api/products`
 - **Update satu produk**: `PUT /api/products/{id}`
 - **Ambil detail satu produk**: `GET /api/products/{id}`
@@ -260,11 +261,17 @@ The application provides several API endpoints for the functionalities mentioned
    ```bash
    curl --location '{{url}}/api/products'
    ```
-3. Display Product By ID Endpoint:
+   
+3. Search Products by Product Name Endpoint:
+   ```bash
+   curl --location '{{url}}/api/products?name=bawang'
+   ```
+   
+4. Display Product By ID Endpoint:
    ```bash
    curl --location '{{url}}/api/products/6'
    ```
-4. Create New Product Endpoint:
+5. Create New Product Endpoint:
    ```bash
    curl --location '{{url}}/api/v1/products' \
    --header 'Content-Type: application/json' \
@@ -275,7 +282,7 @@ The application provides several API endpoints for the functionalities mentioned
     "category_id": 2
    }'
    ```
-5. Update Existing Product Endpoint:
+6. Update Existing Product Endpoint:
    ```bash
    curl --location --request PUT '{{url}}/api/products/9' \
    --header 'Content-Type: application/json' \
@@ -286,7 +293,7 @@ The application provides several API endpoints for the functionalities mentioned
     "category_id": 2
    }'
    ```
-6. Delete Existing Product Endpoint:
+7. Delete Existing Product Endpoint:
    ```bash
    curl --location --request DELETE '{{url}}/api/products/9'
    ```

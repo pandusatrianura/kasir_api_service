@@ -268,6 +268,30 @@
       "response": []
     },
     {
+      "name": "Search Product With Name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/api/products?name=bawang",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "bawang"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Display Product By ID",
       "request": {
         "method": "GET",
@@ -394,7 +418,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{url}}/api/reports?start_date=2026-02-06&end_date=2026-02-07",
+          "raw": "{{url}}/api/reports?start_date=2026-02-05&end_date=2026-02-06",
           "host": [
             "{{url}}"
           ],
@@ -405,11 +429,11 @@
           "query": [
             {
               "key": "start_date",
-              "value": "2026-02-06"
+              "value": "2026-02-05"
             },
             {
               "key": "end_date",
-              "value": "2026-02-07"
+              "value": "2026-02-06"
             }
           ]
         }

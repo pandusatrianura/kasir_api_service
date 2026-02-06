@@ -56,3 +56,8 @@ type CheckoutResponse struct {
 	Transaction      Transaction       `json:"transaction"`
 	CheckoutProducts []CheckoutProduct `json:"transaction_details"`
 }
+
+type UpdatedProduct struct {
+	ID    int `json:"id"`
+	Stock int `json:"stock"`
+}

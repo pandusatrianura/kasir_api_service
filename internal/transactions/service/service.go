@@ -15,7 +15,9 @@ type TransactionsService struct {
 }
 
 func NewTransactionsService(repo repository.ITransactionsRepository) ITransactionsService {
-	return &TransactionsService{transactionsRepository: repo}
+	return &TransactionsService{
+		transactionsRepository: repo,
+	}
 }
 
 func (t *TransactionsService) API() entity.HealthCheck {
@@ -26,6 +28,7 @@ func (t *TransactionsService) API() entity.HealthCheck {
 }
 
 func (t *TransactionsService) Checkout(requests []entity.CheckoutRequest) (*entity.CheckoutResponse, error) {
+
 	response, err := t.transactionsRepository.Checkout(requests)
 	if err != nil {
 		return nil, err

@@ -5,8 +5,6 @@ import (
 	"errors"
 
 	constants "github.com/pandusatrianura/kasir_api_service/constant"
-	productEntity "github.com/pandusatrianura/kasir_api_service/internal/products/entity"
-	productRepository "github.com/pandusatrianura/kasir_api_service/internal/products/repository"
 	"github.com/pandusatrianura/kasir_api_service/internal/transactions/entity"
 	"github.com/pandusatrianura/kasir_api_service/pkg/database"
 )
@@ -16,14 +14,12 @@ type ITransactionsRepository interface {
 }
 
 type TransactionsRepository struct {
-	db          *database.DB
-	productRepo productRepository.IProductRepository
+	db *database.DB
 }
 
-func NewTransactionsRepository(db *database.DB, productRepository productRepository.IProductRepository) ITransactionsRepository {
+func NewTransactionsRepository(db *database.DB) ITransactionsRepository {
 	return &TransactionsRepository{
-		db:          db,
-		productRepo: productRepository,
+		db: db,
 	}
 }
 
@@ -33,7 +29,7 @@ func (t *TransactionsRepository) Checkout(requests []entity.CheckoutRequest) (*e
 		subTotal         int
 		checkoutProducts []entity.CheckoutProduct
 		detailProducts   []entity.CheckoutProductDetail
-		updateProducts   []productEntity.Product
+		updateProducts   []entity.UpdatedProduct
 		err              error
 	)
 
@@ -74,7 +70,7 @@ func (t *TransactionsRepository) Checkout(requests []entity.CheckoutRequest) (*e
 			CategoryName: product.CategoryName,
 		}
 
-		updateProduct := productEntity.Product{
+		updateProduct := entity.UpdatedProduct{
 			ID:    product.ID,
 			Stock: product.Stock - product.Quantity,
 		}
@@ -83,12 +79,7 @@ func (t *TransactionsRepository) Checkout(requests []entity.CheckoutRequest) (*e
 		checkoutProducts = append(checkoutProducts, checkoutProduct)
 	}
 
-	transactionID, checkoutProducts, err := t.createTransaction(totalAmount, checkoutProducts)
-	if err != nil {
-		return nil, err
-	}
-
-	err = t.updateProductStock(updateProducts)
+	transactionID, checkoutProducts, err := t.createTransaction(totalAmount, checkoutProducts, updateProducts)
 	if err != nil {
 		return nil, err
 	}
@@ -116,12 +107,11 @@ func (t *TransactionsRepository) getDetailProductByID(requests []entity.Checkout
 
 	for _, request := range requests {
 		err = t.db.WithStmt(query, func(stmt *database.Stmt) error {
-			err = stmt.Query(func(rows *database.Rows) error {
-				if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CategoryID, &product.CategoryName); err != nil {
-					return err
-				}
-				return nil
-			}, request.ProductID)
+			scanFn := func(rows *database.Rows) error {
+				return rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CategoryID, &product.CategoryName)
+			}
+
+			err = stmt.Query(scanFn, request.ProductID)
 
 			if err != nil {
 				return err
@@ -145,7 +135,7 @@ func (t *TransactionsRepository) getDetailProductByID(requests []entity.Checkout
 	return products, nil
 }
 
-func (t *TransactionsRepository) createTransaction(totalAmount int, checkoutProducts []entity.CheckoutProduct) (int, []entity.CheckoutProduct, error) {
+func (t *TransactionsRepository) createTransaction(totalAmount int, checkoutProducts []entity.CheckoutProduct, updateProducts []entity.UpdatedProduct) (int, []entity.CheckoutProduct, error) {
 	var (
 		query          string
 		err            error
@@ -166,6 +156,15 @@ func (t *TransactionsRepository) createTransaction(totalAmount int, checkoutProd
 		}
 
 		checkoutWithID, err = t.createTransactionDetail(int(lastInsertId), checkoutProducts)
+		if err != nil {
+			return err
+		}
+
+		if checkoutWithID == nil {
+			return errors.New(constants.ErrProductNotFound)
+		}
+
+		err = t.updateProductsStock(updateProducts)
 		if err != nil {
 			return err
 		}
@@ -223,20 +222,42 @@ func (t *TransactionsRepository) createTransactionDetail(transactionId int, chec
 	return checkoutProductsWithID, nil
 }
 
-func (t *TransactionsRepository) updateProductStock(updateProducts []productEntity.Product) error {
+func (t *TransactionsRepository) updateProductsStock(updateProducts []entity.UpdatedProduct) error {
 	var (
 		err error
 	)
 
 	if len(updateProducts) > 0 {
 		for _, product := range updateProducts {
-			err = t.productRepo.UpdateStockByProductID(&product)
+			err = t.updateStockByProductID(&product)
 			if err != nil {
 				return err
 			}
 		}
 	} else {
 		return errors.New(constants.ErrProductNotFound)
+	}
+
+	return nil
+}
+
+func (t *TransactionsRepository) updateStockByProductID(product *entity.UpdatedProduct) error {
+	var (
+		query string
+		err   error
+	)
+
+	query = "UPDATE products SET stock = $1, updated_at = $2 WHERE id = $3"
+
+	err = t.db.WithTx(func(tx *database.Tx) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
+			_, err := stmt.Exec(product.Stock, "now()", product.ID)
+			return err
+		})
+	})
+
+	if err != nil {
+		return err
 	}
 
 	return nil

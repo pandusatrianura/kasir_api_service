@@ -3,12 +3,15 @@ package service
 import (
 	"errors"
 
+	constants "github.com/pandusatrianura/kasir_api_service/constant"
+	categoryRepository "github.com/pandusatrianura/kasir_api_service/internal/categories/repository"
 	"github.com/pandusatrianura/kasir_api_service/internal/products/entity"
 	"github.com/pandusatrianura/kasir_api_service/internal/products/repository"
 )
 
 type ProductService struct {
-	productRepository repository.IProductRepository
+	productRepository  repository.IProductRepository
+	categoryRepository categoryRepository.ICategoryRepository
 }
 
 type IProductService interface {
@@ -20,8 +23,11 @@ type IProductService interface {
 	API() entity.HealthCheck
 }
 
-func NewProductService(productRepository repository.IProductRepository) IProductService {
-	return &ProductService{productRepository: productRepository}
+func NewProductService(productRepository repository.IProductRepository, categoryRepository categoryRepository.ICategoryRepository) IProductService {
+	return &ProductService{
+		productRepository:  productRepository,
+		categoryRepository: categoryRepository,
+	}
 }
 
 func (s *ProductService) API() entity.HealthCheck {
@@ -32,7 +38,7 @@ func (s *ProductService) API() entity.HealthCheck {
 }
 
 func (s *ProductService) CreateProduct(requestProduct *entity.RequestProduct) error {
-	_, err := s.productRepository.GetCategoryByID(int64(requestProduct.CategoryID))
+	_, err := s.categoryRepository.GetCategoryByID(int64(requestProduct.CategoryID))
 	if err != nil {
 		return errors.New("category not found")
 	}
@@ -50,12 +56,12 @@ func (s *ProductService) CreateProduct(requestProduct *entity.RequestProduct) er
 func (s *ProductService) UpdateProduct(id int64, requestProduct *entity.RequestProduct) error {
 	_, err := s.productRepository.GetProductByID(id)
 	if err != nil {
-		return errors.New("product not found")
+		return errors.New(constants.ErrProductNotFound)
 	}
 
-	_, err = s.productRepository.GetCategoryByID(int64(requestProduct.CategoryID))
+	_, err = s.categoryRepository.GetCategoryByID(int64(requestProduct.CategoryID))
 	if err != nil {
-		return errors.New("category not found")
+		return errors.New(constants.ErrCategoryNotFound)
 	}
 
 	product := &entity.Product{
@@ -71,7 +77,7 @@ func (s *ProductService) UpdateProduct(id int64, requestProduct *entity.RequestP
 func (s *ProductService) DeleteProduct(id int64) error {
 	_, err := s.productRepository.GetProductByID(id)
 	if err != nil {
-		return errors.New("product not found")
+		return errors.New(constants.ErrProductNotFound)
 	}
 
 	return s.productRepository.DeleteProduct(id)

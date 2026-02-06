@@ -48,14 +48,14 @@ func (s *Server) Run() error {
 	categoriesHandle := categoryHandler.NewCategoryHandler(categoriesSvc)
 
 	productsRepo := productRepository.NewProductRepository(s.db)
-	productsSvc := productService.NewProductService(productsRepo)
+	productsSvc := productService.NewProductService(productsRepo, categoriesRepo)
 	productsHandle := productHandler.NewProductHandler(productsSvc)
 
 	healthRepo := healthRepository.NewHealthRepository(s.db)
 	healthSvc := healthService.NewHealthService(healthRepo)
 	healthHandle := healthHandler.NewHealthHandler(healthSvc)
 
-	transactionsRepo := transactionsRepository.NewTransactionsRepository(s.db, productsRepo)
+	transactionsRepo := transactionsRepository.NewTransactionsRepository(s.db)
 	transactionsSvc := transactionsService.NewTransactionsService(transactionsRepo)
 	transactionsHandle := transactionsHandler.NewTransactionsHandler(transactionsSvc)
 

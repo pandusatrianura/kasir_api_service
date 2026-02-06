@@ -14,8 +14,6 @@ type IProductRepository interface {
 	DeleteProduct(id int64) error
 	GetProductByID(id int64) (*entity.ResponseProductWithCategories, error)
 	GetAllProducts(name string) ([]entity.ResponseProductWithCategories, error)
-	GetCategoryByID(id int64) (*entity.Category, error)
-	UpdateStockByProductID(product *entity.Product) error
 }
 
 type ProductRepository struct {
@@ -35,20 +33,10 @@ func (r *ProductRepository) CreateProduct(product *entity.Product) error {
 	query = "INSERT INTO products (name, price, stock, category_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)"
 
 	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(product.Name, product.Price, product.Stock, product.CategoryID, "now()", "now()")
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
-		if err != nil {
 			return err
-		}
-
-		return nil
+		})
 	})
 
 	if err != nil {
@@ -67,53 +55,10 @@ func (r *ProductRepository) UpdateProduct(id int64, product *entity.Product) err
 	query = "UPDATE products SET name = $1, price = $2, stock = $3, category_id = $4, updated_at = $5 WHERE id = $6"
 
 	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err := stmt.Exec(product.Name, product.Price, product.Stock, product.CategoryID, "now()", id)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
-		if err != nil {
 			return err
-		}
-
-		return nil
-	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (r *ProductRepository) UpdateStockByProductID(product *entity.Product) error {
-	var (
-		query string
-		err   error
-	)
-
-	query = "UPDATE products SET stock = $1, updated_at = $2 WHERE id = $3"
-
-	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
-			_, err := stmt.Exec(product.Stock, "now()", product.ID)
-
-			if err != nil {
-				return err
-			}
-
-			return nil
 		})
-
-		if err != nil {
-			return err
-		}
-
-		return nil
 	})
 
 	if err != nil {
@@ -132,20 +77,10 @@ func (r *ProductRepository) DeleteProduct(id int64) error {
 	query = "DELETE FROM products WHERE id = $1"
 
 	err = r.db.WithTx(func(tx *database.Tx) error {
-		err = tx.WithStmt(query, func(stmt *database.Stmt) error {
+		return tx.WithStmt(query, func(stmt *database.Stmt) error {
 			_, err = stmt.Exec(id)
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
-
-		if err != nil {
 			return err
-		}
-
-		return nil
+		})
 	})
 
 	if err != nil {
@@ -166,35 +101,25 @@ func (r *ProductRepository) GetAllProducts(name string) ([]entity.ResponseProduc
 
 	query = "SELECT products.id, products.name, products.price, products.stock, products.created_at, products.updated_at, categories.id as category_id, categories.name as category_name FROM products JOIN categories ON products.category_id = categories.id"
 
+	if name != "" {
+		query += " WHERE products.name ILIKE $1"
+		args = "%" + name + "%"
+	}
+
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
+		scanFn := func(rows *database.Rows) error {
+			var product entity.ProductWithCategories
+			if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
+				return err
+			}
+			products = append(products, product)
+			return nil
+		}
+
 		if name != "" {
-			args = "%" + name + "%"
-			err = stmt.Query(func(rows *database.Rows) error {
-				var product entity.ProductWithCategories
-				if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
-					return err
-				}
-
-				products = append(products, product)
-				return nil
-			}, args)
-		} else {
-			err = stmt.Query(func(rows *database.Rows) error {
-				var product entity.ProductWithCategories
-				if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
-					return err
-				}
-
-				products = append(products, product)
-				return nil
-			})
+			return stmt.Query(scanFn, args)
 		}
-
-		if err != nil {
-			return err
-		}
-
-		return nil
+		return stmt.Query(scanFn)
 	})
 
 	if err != nil {
@@ -231,19 +156,10 @@ func (r *ProductRepository) GetProductByID(id int64) (*entity.ResponseProductWit
 	query = "SELECT products.id, products.name, products.price, products.stock, products.created_at, products.updated_at, categories.id as category_id, categories.name as category_name FROM products JOIN categories ON products.category_id = categories.id WHERE products.id = $1"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
-			if err := rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName); err != nil {
-				return err
-			}
-
-			return nil
-		}, id)
-
-		if err != nil {
-			return err
+		scanFn := func(rows *database.Rows) error {
+			return rows.Scan(&product.ID, &product.Name, &product.Price, &product.Stock, &product.CreatedAt, &product.UpdatedAt, &product.CategoryID, &product.CategoryName)
 		}
-
-		return nil
+		return stmt.Query(scanFn, id)
 	})
 
 	if err != nil {
@@ -269,40 +185,4 @@ func (r *ProductRepository) GetProductByID(id int64) (*entity.ResponseProductWit
 	}
 
 	return &productCategory, nil
-}
-
-func (r *ProductRepository) GetCategoryByID(id int64) (*entity.Category, error) {
-	var (
-		category entity.Category
-		err      error
-		query    string
-	)
-
-	query = "SELECT id, name FROM categories WHERE id = $1"
-
-	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
-			if err := rows.Scan(&category.ID, &category.Name); err != nil {
-				return err
-			}
-
-			return nil
-		}, id)
-
-		if err != nil {
-			return err
-		}
-
-		return nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if category.ID == 0 {
-		return nil, errors.New("category not found")
-	}
-
-	return &category, nil
 }

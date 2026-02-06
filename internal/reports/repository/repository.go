@@ -31,8 +31,6 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 		totalRevenue     int
 		totalTransaction int
 		soldsProduct     []entity.MostSoldProduct
-		soldProduct      entity.MostSoldProduct
-		query            string
 		err              error
 	)
 
@@ -40,16 +38,45 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 		return nil, errors.New(constants.ErrRequiredDate)
 	}
 
+	totalRevenue, totalTransaction, err = r.getRevenueAndTransaction(startDate, endDate)
+	if err != nil {
+		return nil, err
+	}
+
+	soldsProduct, err = r.getMostSoldProduct(startDate, endDate)
+	if err != nil {
+		return nil, err
+	}
+
+	report := entity.ReportTransaction{
+		TotalRevenue:      int64(totalRevenue),
+		TotalTransactions: totalTransaction,
+		MostSoldProduct:   soldsProduct,
+	}
+
+	return &report, nil
+}
+
+func (r *ReportsRepository) getRevenueAndTransaction(startDate string, endDate string) (int, int, error) {
+	var (
+		totalRevenue     int
+		totalTransaction int
+		query            string
+		err              error
+	)
+
+	if startDate == "" || endDate == "" {
+		return 0, 0, errors.New(constants.ErrRequiredDate)
+	}
+
 	query = "SELECT SUM(total_amount) AS total_revenue, COUNT(id) AS total_transaction FROM transactions WHERE created_at BETWEEN $1 AND $2"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
-			if err := rows.Scan(&totalRevenue, &totalTransaction); err != nil {
-				return errors.New(constants.ErrTransactionNotFound)
-			}
+		scanFn := func(rows *database.Rows) error {
+			return rows.Scan(&totalRevenue, &totalTransaction)
+		}
 
-			return nil
-		}, startDate, endDate)
+		err = stmt.Query(scanFn, startDate, endDate)
 
 		if err != nil {
 			return errors.New(constants.ErrTransactionNotFound)
@@ -63,21 +90,37 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 	})
 
 	if err != nil {
-		return nil, err
+		return 0, 0, err
+	}
+
+	return totalRevenue, totalTransaction, nil
+}
+
+func (r *ReportsRepository) getMostSoldProduct(startDate string, endDate string) ([]entity.MostSoldProduct, error) {
+	var (
+		soldsProduct []entity.MostSoldProduct
+		soldProduct  entity.MostSoldProduct
+		query        string
+		err          error
+	)
+
+	if startDate == "" || endDate == "" {
+		return nil, errors.New(constants.ErrRequiredDate)
 	}
 
 	query = "SELECT c.name, SUM(a.quantity) AS sum_quantity FROM transaction_details a JOIN transactions b ON a.transaction_id = b.id JOIN products c ON a.product_id = c.id WHERE b.created_at >= $1 AND b.created_at < $2 GROUP BY a.product_id, c.name ORDER BY sum_quantity DESC;"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
-		err = stmt.Query(func(rows *database.Rows) error {
+		scanFn := func(rows *database.Rows) error {
 			if err := rows.Scan(&soldProduct.Name, &soldProduct.QtySold); err != nil {
 				return err
 			}
 
 			soldsProduct = append(soldsProduct, soldProduct)
 			return nil
-		}, startDate, endDate)
+		}
 
+		err = stmt.Query(scanFn, startDate, endDate)
 		if err != nil {
 			return err
 		}
@@ -93,11 +136,5 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 		return nil, err
 	}
 
-	report := entity.ReportTransaction{
-		TotalRevenue:      int64(totalRevenue),
-		TotalTransactions: totalTransaction,
-		MostSoldProduct:   soldsProduct,
-	}
-
-	return &report, nil
+	return soldsProduct, nil
 }
