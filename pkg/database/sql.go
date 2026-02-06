@@ -48,7 +48,12 @@ func (db *DB) WithStmt(query string, fn func(stmt *Stmt) error) error {
 		return err
 	}
 
-	defer stmt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
+		if err != nil {
+			LogFn("Failed to close statement: %v", err)
+		}
+	}(stmt)
 
 	err = fn(&Stmt{stmt})
 	if err != nil {
@@ -70,7 +75,10 @@ func (db *DB) WithTx(fn func(tx *Tx) error) error {
 	}
 
 	if err = fn(&Tx{Tx: tx}); err != nil {
-		tx.Rollback()
+		err := tx.Rollback()
+		if err != nil {
+			return err
+		}
 		return err
 	}
 
@@ -90,7 +98,12 @@ func (tx *Tx) WithStmt(query string, fn func(stmt *Stmt) error) error {
 		return err
 	}
 
-	defer stmt.Close()
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
+		if err != nil {
+			LogFn("Failed to close statement: %v", err)
+		}
+	}(stmt)
 
 	err = fn(&Stmt{stmt})
 	if err != nil {
@@ -110,7 +123,12 @@ func (stmt *Stmt) Query(rowFn func(rows *Rows) error, args ...interface{}) error
 		return err
 	}
 
-	defer rows.Close()
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			LogFn("Failed to close rows: %v", err)
+		}
+	}(rows)
 
 	for rows.Next() {
 		err = rowFn(&Rows{rows})
@@ -225,7 +243,12 @@ func (r *Row) Scan(dest ...interface{}) error {
 	i := 0
 	err = mapColumns(dest2, dest, columns, "", &i)
 
-	defer r.rows.Close()
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			LogFn("Failed to close rows: %v", err)
+		}
+	}(r.rows)
 	for _, dp := range dest {
 		if _, ok := dp.(*sql.RawBytes); ok {
 			return errors.New("sql: RawBytes isn't allowed on Row.Scan")

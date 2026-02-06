@@ -16,14 +16,17 @@ import (
 // @BasePath /
 
 func main() {
-	config.InitConfig()
-
 	myFigure := figure.NewColorFigure("Kasir API", "", "green", true)
 	myFigure.Print()
 	fmt.Println()
 	fmt.Println("==========================================================")
 
+	config.InitConfig()
+
 	port := viper.GetString("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	db, err := database.InitDatabase()
 	if err != nil {
