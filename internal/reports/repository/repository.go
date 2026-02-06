@@ -15,14 +15,12 @@ type IReportsRepository interface {
 }
 
 type ReportsRepository struct {
-	db          *database.DB
-	productRepo productRepository.IProductRepository
+	db *database.DB
 }
 
 func NewReportsRepository(db *database.DB, productRepository productRepository.IProductRepository) IReportsRepository {
 	return &ReportsRepository{
-		db:          db,
-		productRepo: productRepository,
+		db: db,
 	}
 }
 
