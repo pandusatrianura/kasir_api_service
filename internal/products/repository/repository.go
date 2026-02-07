@@ -99,6 +99,9 @@ func (r *ProductRepository) GetAllProducts(name string) ([]entity.ResponseProduc
 		args              string
 	)
 
+	products = make([]entity.ProductWithCategories, 0)
+	productCategories = make([]entity.ResponseProductWithCategories, 0)
+
 	query = "SELECT products.id, products.name, products.price, products.stock, products.created_at, products.updated_at, categories.id as category_id, categories.name as category_name FROM products JOIN categories ON products.category_id = categories.id"
 
 	if name != "" {

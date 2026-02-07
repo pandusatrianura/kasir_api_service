@@ -103,6 +103,8 @@ func (t *TransactionsRepository) getDetailProductByID(requests []entity.Checkout
 		query    string
 	)
 
+	products = make([]entity.CheckoutProductDetail, 0)
+
 	query = "SELECT products.id, products.name, products.price, products.stock, categories.id as category_id, categories.name as category_name FROM products JOIN categories ON products.category_id = categories.id WHERE products.id = $1"
 
 	for _, request := range requests {
@@ -142,6 +144,8 @@ func (t *TransactionsRepository) createTransaction(totalAmount int, checkoutProd
 		lastInsertId   int64
 		checkoutWithID []entity.CheckoutProduct
 	)
+
+	checkoutWithID = make([]entity.CheckoutProduct, 0)
 
 	query = "INSERT INTO transactions (total_amount, created_at, updated_at) VALUES ($1, $2, $3) RETURNING id;"
 
@@ -186,6 +190,8 @@ func (t *TransactionsRepository) createTransactionDetail(transactionId int, chec
 		lastInsertId           int64
 		checkoutProductsWithID []entity.CheckoutProduct
 	)
+
+	checkoutProductsWithID = make([]entity.CheckoutProduct, 0)
 
 	query = "INSERT INTO transaction_details (transaction_id, product_id, quantity, subtotal, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
 

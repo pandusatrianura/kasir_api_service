@@ -32,6 +32,8 @@ func (r *ReportsRepository) Report(startDate string, endDate string) (*entity.Re
 		err              error
 	)
 
+	soldsProduct = make([]entity.MostSoldProduct, 0)
+
 	if startDate == "" || endDate == "" {
 		return nil, errors.New(constants.ErrRequiredDate)
 	}
@@ -107,6 +109,8 @@ func (r *ReportsRepository) getMostSoldProduct(startDate string, endDate string)
 		err          error
 	)
 
+	soldsProduct = make([]entity.MostSoldProduct, 0)
+
 	if startDate == "" || endDate == "" {
 		return nil, errors.New(constants.ErrRequiredDate)
 	}
@@ -146,6 +150,8 @@ func (r *ReportsRepository) findMostSoldProducts(products []entity.MostSoldProdu
 	var (
 		prods []entity.MostSoldProduct
 	)
+
+	prods = make([]entity.MostSoldProduct, 0)
 
 	if len(products) == 0 {
 		return nil

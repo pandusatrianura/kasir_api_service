@@ -140,6 +140,8 @@ func (r *CategoryRepository) GetAllCategories() ([]entity.ResponseCategory, erro
 		query      string
 	)
 
+	categories = make([]entity.Category, 0)
+
 	query = "SELECT id, name, description, created_at, updated_at FROM categories"
 
 	err = r.db.WithStmt(query, func(stmt *database.Stmt) error {
