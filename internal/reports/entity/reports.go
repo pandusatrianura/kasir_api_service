@@ -6,12 +6,12 @@ type HealthCheck struct {
 }
 type ReportTransaction struct {
 	TotalRevenue      int64             `json:"total_revenue"`
-	TotalTransactions int               `json:"total_transaksi"`
-	MostSoldProduct   []MostSoldProduct `json:"produk_terlaris"`
+	TotalTransactions int               `json:"total_transactions"`
+	MostSoldProduct   []MostSoldProduct `json:"most_sold_product"`
 }
 
 type MostSoldProduct struct {
-	Name      string `json:"nama"`
+	Name      string `json:"name"`
 	ProductID int    `json:"id,omitempty"`
-	QtySold   int    `json:"qty_terjual"`
+	QtySold   int    `json:"quantity_sold"`
 }

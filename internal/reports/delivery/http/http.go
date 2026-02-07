@@ -67,7 +67,10 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 	layout := "2006-01-02"
 
 	if startDate == "" && endDate == "" {
-		timeNow := time.Now().UTC()
+		timeNow, err := datetime.ParseTime(time.Now().Format(time.RFC3339))
+		if err != nil {
+			response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrReportRequest, err)
+		}
 		date := timeNow.Format(layout)
 		startDate = fmt.Sprintf("%s 00:00:00", date)
 		endDate = fmt.Sprintf("%s 23:59:59", date)
