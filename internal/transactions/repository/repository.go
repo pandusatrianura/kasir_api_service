@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 
 	constants "github.com/pandusatrianura/kasir_api_service/constant"
 	"github.com/pandusatrianura/kasir_api_service/internal/transactions/entity"
@@ -159,18 +160,19 @@ func (t *TransactionsRepository) createTransaction(totalAmount int, checkoutProd
 			return err
 		}
 
-		checkoutWithID, err = t.createTransactionDetail(int(lastInsertId), checkoutProducts)
+		err = t.createTransactionDetail(int(lastInsertId), checkoutProducts)
 		if err != nil {
 			return err
-		}
-
-		if checkoutWithID == nil {
-			return errors.New(constants.ErrProductNotFound)
 		}
 
 		err = t.updateProductsStock(updateProducts)
 		if err != nil {
 			return err
+		}
+
+		checkoutWithID = t.getTransactionsDetailByTransactionID(int(lastInsertId))
+		if checkoutWithID == nil {
+			return errors.New(constants.ErrProductNotFound)
 		}
 
 		return nil
@@ -183,49 +185,39 @@ func (t *TransactionsRepository) createTransaction(totalAmount int, checkoutProd
 	return int(lastInsertId), checkoutWithID, nil
 }
 
-func (t *TransactionsRepository) createTransactionDetail(transactionId int, checkoutProducts []entity.CheckoutProduct) ([]entity.CheckoutProduct, error) {
+func (t *TransactionsRepository) createTransactionDetail(transactionId int, checkoutProducts []entity.CheckoutProduct) error {
 	var (
-		query                  string
-		err                    error
-		lastInsertId           int64
-		checkoutProductsWithID []entity.CheckoutProduct
+		query string
+		err   error
+		args  []interface{}
 	)
 
-	checkoutProductsWithID = make([]entity.CheckoutProduct, 0)
+	query = "INSERT INTO transaction_details (transaction_id, product_id, quantity, subtotal, created_at, updated_at) VALUES "
 
-	query = "INSERT INTO transaction_details (transaction_id, product_id, quantity, subtotal, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
-
-	for _, product := range checkoutProducts {
-		err = t.db.WithTx(func(tx *database.Tx) error {
-			rows := t.db.QueryRow(query, transactionId, product.ProductID, product.Quantity, product.Subtotal, "now()", "now()")
-			if rows.Error() != "" {
-				return errors.New(rows.Error())
-			}
-
-			if err := rows.Scan(&lastInsertId); err != nil {
-				return err
-			}
-
-			checkoutProductsWithID = append(checkoutProductsWithID, entity.CheckoutProduct{
-				ProductID:           product.ProductID,
-				TransactionDetailID: int(lastInsertId),
-				TransactionID:       transactionId,
-				Name:                product.Name,
-				Quantity:            product.Quantity,
-				Subtotal:            product.Subtotal,
-				CategoryID:          product.CategoryID,
-				CategoryName:        product.CategoryName,
-			})
-
-			return nil
-		})
-
-		if err != nil {
-			return nil, err
+	numFields := 6
+	for i, product := range checkoutProducts {
+		p := i * numFields
+		query = fmt.Sprintf("%s ($%d, $%d, $%d, $%d, $%d, $%d)", query, p+1, p+2, p+3, p+4, p+5, p+6)
+		if i < len(checkoutProducts)-1 {
+			query += ","
 		}
+		args = append(args, transactionId, product.ProductID, product.Quantity, product.Subtotal, "now()", "now()")
 	}
 
-	return checkoutProductsWithID, nil
+	err = t.db.WithTx(func(tx *database.Tx) error {
+		_, err = t.db.Exec(query, args...)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (t *TransactionsRepository) updateProductsStock(updateProducts []entity.UpdatedProduct) error {
@@ -267,4 +259,35 @@ func (t *TransactionsRepository) updateStockByProductID(product *entity.UpdatedP
 	}
 
 	return nil
+}
+
+func (t *TransactionsRepository) getTransactionsDetailByTransactionID(transactionId int) []entity.CheckoutProduct {
+	var (
+		checkoutProducts []entity.CheckoutProduct
+		checkoutProduct  entity.CheckoutProduct
+		query            string
+		err              error
+	)
+
+	checkoutProducts = make([]entity.CheckoutProduct, 0)
+
+	query = "SELECT products.id, products.name, categories.id as category_id, categories.name as category_name, transaction_details.id, transaction_details.transaction_id, transaction_details.quantity, transaction_details.subtotal FROM transaction_details JOIN products ON transaction_details.product_id = products.id JOIN categories ON products.category_id = categories.id WHERE transaction_details.transaction_id = $1"
+
+	err = t.db.WithStmt(query, func(stmt *database.Stmt) error {
+		scanFn := func(rows *database.Rows) error {
+			if err := rows.Scan(&checkoutProduct.ProductID, &checkoutProduct.Name, &checkoutProduct.CategoryID, &checkoutProduct.CategoryName, &checkoutProduct.TransactionDetailID, &checkoutProduct.TransactionID, &checkoutProduct.Quantity, &checkoutProduct.Subtotal); err != nil {
+				return err
+			}
+			checkoutProducts = append(checkoutProducts, checkoutProduct)
+			return nil
+		}
+
+		return stmt.Query(scanFn, transactionId)
+	})
+
+	if err != nil {
+		return nil
+	}
+
+	return checkoutProducts
 }
