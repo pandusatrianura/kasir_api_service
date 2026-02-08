@@ -191,10 +191,10 @@ func (t *TransactionsRepository) createTransactionDetail(transactionId int, chec
 		err   error
 		args  []interface{}
 	)
-
+	
+	numFields := 6
 	query = "INSERT INTO transaction_details (transaction_id, product_id, quantity, subtotal, created_at, updated_at) VALUES "
 
-	numFields := 6
 	for i, product := range checkoutProducts {
 		p := i * numFields
 		query = fmt.Sprintf("%s ($%d, $%d, $%d, $%d, $%d, $%d)", query, p+1, p+2, p+3, p+4, p+5, p+6)
