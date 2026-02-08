@@ -45,7 +45,7 @@
 }
 ```
 ### Task Session 3
-1. Perbaiki repositories/transaction_repository.go ketika insert transaction details ke db.
+1. Perbaiki repositories/transaction_repository.go ketika insert transaction details ke db. Perbaiki biar nggak satu-satu insert nya.
    ```bash
 	  for i := range details {
 		  details[i].TransactionID = transactionID
