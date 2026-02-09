@@ -74,6 +74,7 @@ func (h *ReportHandler) Today(w http.ResponseWriter, r *http.Request) {
 	date := timeNow.Format(layout)
 	startDate = fmt.Sprintf("%s 00:00:00", date)
 	endDate = fmt.Sprintf("%s 23:59:59", date)
+	log.Println("Search report with default today date with start date:", startDate, "and end date:", endDate, "with location:", timeNow.Location())
 
 	startUTC, err := datetime.ParseUTC(startDate)
 	if err != nil {
@@ -100,7 +101,7 @@ func (h *ReportHandler) Today(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.Success(w, http.StatusCreated, constants.SuccessCode, "Report received successfully", report)
+	response.Success(w, http.StatusOK, constants.SuccessCode, "Report received successfully", report)
 }
 
 // Report with or without Date Range godoc
@@ -159,5 +160,5 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.Success(w, http.StatusCreated, constants.SuccessCode, "Report received successfully", report)
+	response.Success(w, http.StatusOK, constants.SuccessCode, "Report received successfully", report)
 }
