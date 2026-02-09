@@ -338,7 +338,7 @@ The application provides several API endpoints for the functionalities mentioned
    ```bash
    curl --location '{{url}}/api/reports/hari-ini'
    ```
-3. Show Sales Report With Date Range Endpoint:
+3. Show Sales Report With Date Range Endpoint (Default today if start_date and end_date not provided):
    ```bash
    curl --location '{{url}}/api/reports?start_date=2026-02-04&end_date=2026-02-05'
    ```
