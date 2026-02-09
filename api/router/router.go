@@ -52,6 +52,7 @@ func (h *Router) RegisterRoutes() *http.ServeMux {
 	r.HandleFunc("GET /transactions/health", h.transactions.API)
 	r.HandleFunc("POST /transactions/checkout", h.transactions.Checkout)
 	r.HandleFunc("GET /reports/health", h.report.API)
+	r.HandleFunc("GET /reports/hari-ini", h.report.Today)
 	r.HandleFunc("GET /reports", h.report.Report)
 	r.HandleFunc("GET /docs", h.index.Docs)
 	return r

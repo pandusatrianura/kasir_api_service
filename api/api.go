@@ -59,7 +59,7 @@ func (s *Server) Run() error {
 	transactionsSvc := transactionsService.NewTransactionsService(transactionsRepo)
 	transactionsHandle := transactionsHandler.NewTransactionsHandler(transactionsSvc)
 
-	reportsRepo := reportRepository.NewReportsRepository(s.db, productsRepo)
+	reportsRepo := reportRepository.NewReportsRepository(s.db)
 	reportsService := reportService.NewReportService(reportsRepo)
 	reportsHandle := reportHandler.NewReportHandler(reportsService)
 

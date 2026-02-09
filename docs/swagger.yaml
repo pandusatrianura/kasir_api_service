@@ -458,7 +458,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get sales report
+      description: Get sales report with or without Date Range (Default Today)
       parameters:
       - description: Start Date
         in: query
@@ -482,7 +482,29 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Get sales report
+      summary: Get sales report with or without Date Range (Default Today)
+      tags:
+      - reports
+  /api/reports/hari-ini:
+    get:
+      consumes:
+      - application/json
+      description: Get sales report daily
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get sales report daily
       tags:
       - reports
   /api/reports/health:

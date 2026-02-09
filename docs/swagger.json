@@ -633,7 +633,7 @@
         },
         "/api/reports": {
             "get": {
-                "description": "Get sales report",
+                "description": "Get sales report with or without Date Range (Default Today)",
                 "consumes": [
                     "application/json"
                 ],
@@ -643,7 +643,7 @@
                 "tags": [
                     "reports"
                 ],
-                "summary": "Get sales report",
+                "summary": "Get sales report with or without Date Range (Default Today)",
                 "parameters": [
                     {
                         "type": "string",
@@ -658,6 +658,39 @@
                         "in": "query"
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/hari-ini": {
+            "get": {
+                "description": "Get sales report daily",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Get sales report daily",
                 "responses": {
                     "200": {
                         "description": "OK",

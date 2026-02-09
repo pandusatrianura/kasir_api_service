@@ -50,9 +50,62 @@ func (h *ReportHandler) API(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-// Report godoc
-// @Summary Get sales report
-// @Description Get sales report
+// Daily godoc
+// @Summary Get sales report daily
+// @Description Get sales report daily
+// @Tags reports
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 500 {object} map[string]string
+// @Router /api/reports/hari-ini [get]
+func (h *ReportHandler) Today(w http.ResponseWriter, r *http.Request) {
+	var (
+		startDate string
+		endDate   string
+	)
+
+	layout := "2006-01-02"
+
+	timeNow, err := datetime.ParseTime(time.Now().Format(time.RFC3339))
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrReportRequest, err)
+	}
+	date := timeNow.Format(layout)
+	startDate = fmt.Sprintf("%s 00:00:00", date)
+	endDate = fmt.Sprintf("%s 23:59:59", date)
+
+	startUTC, err := datetime.ParseUTC(startDate)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrReportRequest, err)
+		return
+	}
+
+	endUTC, err := datetime.ParseUTC(endDate)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrReportRequest, err)
+		return
+	}
+
+	if startUTC > endUTC {
+		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrReportRequest, errors.New(constants.ErrStarDate))
+		return
+	}
+
+	log.Printf("Search today report with start date: %v until end date: %v, current UTC Time: %v", startUTC, endUTC, time.Now().UTC())
+
+	report, err := h.service.Report(startUTC, endUTC)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "Report received failed", err)
+		return
+	}
+
+	response.Success(w, http.StatusCreated, constants.SuccessCode, "Report received successfully", report)
+}
+
+// Report with or without Date Range godoc
+// @Summary Get sales report with or without Date Range (Default Today)
+// @Description Get sales report with or without Date Range (Default Today)
 // @Tags reports
 // @Accept json
 // @Produce json
@@ -74,9 +127,11 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 		date := timeNow.Format(layout)
 		startDate = fmt.Sprintf("%s 00:00:00", date)
 		endDate = fmt.Sprintf("%s 23:59:59", date)
+		log.Printf("Search report with date range start date: %v until end date: %v", startDate, endDate)
 	} else {
 		startDate = fmt.Sprintf("%s 00:00:00", startDate)
 		endDate = fmt.Sprintf("%s 23:59:59", endDate)
+		log.Println("Search report with default today")
 	}
 
 	startUTC, err := datetime.ParseUTC(startDate)
@@ -96,7 +151,7 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("Search report with start date: %v until end date: %v, current UTC Time: %v", startUTC, endUTC, time.Now().UTC())
+	log.Printf("Search report with start date: %v until end date: %v, current UTC Time: %v\n", startUTC, endUTC, time.Now().UTC())
 
 	report, err := h.service.Report(startUTC, endUTC)
 	if err != nil {

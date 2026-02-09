@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	constants "github.com/pandusatrianura/kasir_api_service/constant"
-	productRepository "github.com/pandusatrianura/kasir_api_service/internal/products/repository"
 	"github.com/pandusatrianura/kasir_api_service/internal/reports/entity"
 	"github.com/pandusatrianura/kasir_api_service/pkg/database"
 )
@@ -18,7 +17,7 @@ type ReportsRepository struct {
 	db *database.DB
 }
 
-func NewReportsRepository(db *database.DB, productRepository productRepository.IProductRepository) IReportsRepository {
+func NewReportsRepository(db *database.DB) IReportsRepository {
 	return &ReportsRepository{
 		db: db,
 	}

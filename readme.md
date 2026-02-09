@@ -143,8 +143,8 @@ The application provides several API endpoints for the functionalities mentioned
 
 ### Report
 - **Health Check Report API Endpoint**: `GET /api/reports/health`
-- **Menampilkan laporan penjualan hari ini**: `GET /api/reports`
-- **Menampilkan laporan penjualan dengan tanggal tertentu**: `GET /api/reports?start_date=2026-02-04&end_date=2026-02-05`
+- **Menampilkan laporan penjualan hari ini**: `GET /api/reports/hari-ini`
+- **Menampilkan laporan penjualan dengan tanggal tertentu**: `GET /api/reports?start_date=2026-02-04&end_date=2026-02-05` **(Default today if start_date and end_date not provided)**
 
 ## 🛠️ Installation
 
@@ -336,7 +336,7 @@ The application provides several API endpoints for the functionalities mentioned
 
 2. Show Today Sales Report Endpoint:
    ```bash
-   curl --location '{{url}}/api/reports'
+   curl --location '{{url}}/api/reports/hari-ini'
    ```
 3. Show Sales Report With Date Range Endpoint:
    ```bash
