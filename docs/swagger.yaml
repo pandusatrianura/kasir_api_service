@@ -64,6 +64,11 @@ paths:
       - application/json
       description: Create a new category
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Category Data
         in: body
         name: category
@@ -99,6 +104,11 @@ paths:
       - application/json
       description: Delete a category
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Category ID
         in: path
         name: id
@@ -132,6 +142,11 @@ paths:
       - application/json
       description: Get a category by ID
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Category ID
         in: path
         name: id
@@ -165,6 +180,11 @@ paths:
       - application/json
       description: Update a category
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Category ID
         in: path
         name: id
@@ -297,6 +317,11 @@ paths:
       - application/json
       description: Create a new product
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Product Data
         in: body
         name: product
@@ -332,6 +357,11 @@ paths:
       - application/json
       description: Delete a product
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Product ID
         in: path
         name: id
@@ -365,6 +395,11 @@ paths:
       - application/json
       description: Get a product by ID
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Product ID
         in: path
         name: id
@@ -398,6 +433,11 @@ paths:
       - application/json
       description: Update a product
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Product ID
         in: path
         name: id
@@ -460,6 +500,11 @@ paths:
       - application/json
       description: Get sales report with or without Date Range (Default Today)
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Start Date
         in: query
         name: start_date
@@ -490,6 +535,12 @@ paths:
       consumes:
       - application/json
       description: Get sales report daily
+      parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -535,6 +586,11 @@ paths:
       - application/json
       description: Checkout products
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Checkout Data
         in: body
         name: checkout

@@ -52,6 +52,7 @@ func (h *TransactionHandler) API(w http.ResponseWriter, r *http.Request) {
 // @Tags transactions
 // @Accept json
 // @Produce json
+// @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param checkout body entity.Checkout true "Checkout Data"
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string

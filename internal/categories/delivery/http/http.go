@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 
+	"github.com/go-chi/chi/v5"
 	constants "github.com/pandusatrianura/kasir_api_service/constant"
 	"github.com/pandusatrianura/kasir_api_service/internal/categories/entity"
 	"github.com/pandusatrianura/kasir_api_service/internal/categories/service"
@@ -51,6 +51,7 @@ func (h *CategoryHandler) API(w http.ResponseWriter, r *http.Request) {
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param category body entity.RequestCategory true "Category Data"
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
@@ -82,6 +83,7 @@ func (h *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Category ID"
 // @Param category body entity.RequestCategory true "Category Data"
 // @Success 200 {object} map[string]interface{}
@@ -96,7 +98,7 @@ func (h *CategoryHandler) UpdateCategory(w http.ResponseWriter, r *http.Request)
 
 	var requestCategory entity.RequestCategory
 
-	idStr := strings.TrimPrefix(r.URL.Path, "/categories/")
+	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidCategoryID, err)
@@ -122,6 +124,7 @@ func (h *CategoryHandler) UpdateCategory(w http.ResponseWriter, r *http.Request)
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Category ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
@@ -133,7 +136,7 @@ func (h *CategoryHandler) DeleteCategory(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	idStr := strings.TrimPrefix(r.URL.Path, "/categories/")
+	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidCategoryID, err)
@@ -154,13 +157,14 @@ func (h *CategoryHandler) DeleteCategory(w http.ResponseWriter, r *http.Request)
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Category ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/categories/{id} [get]
 func (h *CategoryHandler) GetCategoryByID(w http.ResponseWriter, r *http.Request) {
-	idStr := strings.TrimPrefix(r.URL.Path, "/categories/")
+	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidCategoryID, err)

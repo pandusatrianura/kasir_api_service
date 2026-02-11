@@ -13,11 +13,12 @@
 
 </div>
 
-## 🎯 Task 
+## 🎯 Material 
 
 - [x] Session 1: https://docs.kodingworks.io/s/17137b9a-ed7a-4950-ba9e-eb11299531c2#h-%F0%9F%8E%AF-tugas
 - [x] Session 2: https://docs.kodingworks.io/s/a378a9fe-c0e0-4fa1-a896-43ae347a7b61
 - [x] Session 3: https://docs.kodingworks.io/s/820d006c-a994-4487-b993-bc3b4171a35d
+- [x] Session 4: https://docs.kodingworks.io/s/69587984-2523-410f-8364-488bec624812
 
 ## 💡 Overview
 
@@ -72,6 +73,9 @@
    Optional Challenge
    - Get api/report?start_date=2026-01-01&end_date=2026-02-01
    ```
+
+### Task Session 4
+1. To be added.
 
 ## ✨ Model
 
@@ -171,6 +175,7 @@ The application provides several API endpoints for the functionalities mentioned
    DATABASE_MAX_LIFETIME_CONNECTION=30
    DATABASE_MAX_IDLE_CONNECTION= 50
    DATABASE_MAX_OPEN_CONNECTION= 100
+   API_KEY= "xxxx"
    ```
 
 4. **Run the Application**:
@@ -227,11 +232,13 @@ The application provides several API endpoints for the functionalities mentioned
    ```
 3. Display Category By ID Endpoint:
    ```bash
-   curl --location '{{url}}/api/categories/6'
+   curl --location '{{url}}/api/categories/6' \
+   --header 'X-API-Key: your-secret-api-key-here'
    ```
 4. Create New Category Endpoint:
    ```bash
    curl --location '{{url}}/api/categories' \
+   --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
    "name": "Susu",
@@ -241,6 +248,7 @@ The application provides several API endpoints for the functionalities mentioned
 5. Update Existing Category Endpoint:
    ```bash
    curl --location --request PUT '{{url}}/api/categories/9' \
+   --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
    "name": "Minuman",
@@ -249,7 +257,8 @@ The application provides several API endpoints for the functionalities mentioned
    ```
 6. Delete Existing Category Endpoint:
    ```bash
-   curl --location --request DELETE '{{url}}/api/categories/9'
+   curl --location --request DELETE '{{url}}/api/categories/9' \
+   --header 'X-API-Key: your-secret-api-key-here'
    ```
 ### Product
 
@@ -269,11 +278,13 @@ The application provides several API endpoints for the functionalities mentioned
    
 4. Display Product By ID Endpoint:
    ```bash
-   curl --location '{{url}}/api/products/6'
+   curl --location '{{url}}/api/products/6' \
+   --header 'X-API-Key: your-secret-api-key-here'
    ```
 5. Create New Product Endpoint:
    ```bash
    curl --location '{{url}}/api/v1/products' \
+   --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
     "name": "Bebelac",
@@ -285,6 +296,7 @@ The application provides several API endpoints for the functionalities mentioned
 6. Update Existing Product Endpoint:
    ```bash
    curl --location --request PUT '{{url}}/api/products/9' \
+   --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
     "name": "Bebelac",
@@ -295,7 +307,8 @@ The application provides several API endpoints for the functionalities mentioned
    ```
 7. Delete Existing Product Endpoint:
    ```bash
-   curl --location --request DELETE '{{url}}/api/products/9'
+   curl --location --request DELETE '{{url}}/api/products/9' \
+   --header 'X-API-Key: your-secret-api-key-here'
    ```
 
 ### Transactions
@@ -308,6 +321,7 @@ The application provides several API endpoints for the functionalities mentioned
 2. Checkout Endpoint:
    ```bash
    curl --location '{{url}}/api/transactions/checkout' \
+   --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
     "checkout" : [
@@ -336,11 +350,13 @@ The application provides several API endpoints for the functionalities mentioned
 
 2. Show Today Sales Report Endpoint:
    ```bash
-   curl --location '{{url}}/api/reports/hari-ini'
+   curl --location '{{url}}/api/reports/hari-ini' \
+   --header 'X-API-Key: your-secret-api-key-here'
    ```
 3. Show Sales Report With Date Range Endpoint (Default today if start_date and end_date not provided):
    ```bash
-   curl --location '{{url}}/api/reports?start_date=2026-02-04&end_date=2026-02-05'
+   curl --location '{{url}}/api/reports?start_date=2026-02-04&end_date=2026-02-05' \
+   --header 'X-API-Key: your-secret-api-key-here'
    ```
    
 **Note:** Replace `{{url}}` with the URL of your deployed API (see 📖 Hosted API).

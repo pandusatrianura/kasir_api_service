@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/pandusatrianura/kasir_api_service/api/middleware"
 	route "github.com/pandusatrianura/kasir_api_service/api/router"
 	categoryHandler "github.com/pandusatrianura/kasir_api_service/internal/categories/delivery/http"
 	categoryRepository "github.com/pandusatrianura/kasir_api_service/internal/categories/repository"
@@ -24,6 +25,7 @@ import (
 	transactionsRepository "github.com/pandusatrianura/kasir_api_service/internal/transactions/repository"
 	transactionsService "github.com/pandusatrianura/kasir_api_service/internal/transactions/service"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/pandusatrianura/kasir_api_service/pkg/database"
 )
 
@@ -65,17 +67,31 @@ func (s *Server) Run() error {
 
 	indexHandle := indexHandler.NewIndexHandler()
 
-	r := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle, reportsHandle)
-	routes := r.RegisterRoutes()
-	indexRoutes := r.RegisterIndex()
+	routers := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle, reportsHandle)
+	productRoute := routers.RegisterProductRoutes()
+	indexRoutes := routers.RegisterIndexRoutes()
+	docsRoutes := routers.RegisterDocsRoutes()
+	categoryRoutes := routers.RegisterCategoriesRoutes()
+	transactionRoutes := routers.RegisterTransactionRoutes()
+	reportRoutes := routers.RegisterReportRoutes()
 
-	router := http.NewServeMux()
-	router.Handle("/api/", http.StripPrefix("/api", routes))
-	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	router.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
-	router.Handle("/", http.StripPrefix("", indexRoutes))
+	r := chi.NewRouter()
+	r.Use(middleware.LoggingMiddleware, middleware.ErrorHandlingMiddleware, middleware.CORS)
+	r.Route("/api", func(r chi.Router) {
+		r.Mount("/products", productRoute)
+		r.Mount("/categories", categoryRoutes)
+		r.Mount("/transactions", transactionRoutes)
+		r.Mount("/reports", reportRoutes)
+		r.Mount("/docs", docsRoutes)
+	})
+	r.Route("/", func(r chi.Router) {
+		r.Mount("/", indexRoutes)
+	})
+
+	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	r.Handle("/assets/*", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
 	addr := fmt.Sprintf("%s%s", "0.0.0.0", s.addr)
 	log.Println("Starting server on", addr)
-	return http.ListenAndServe(s.addr, router)
+	return http.ListenAndServe(s.addr, r)
 }

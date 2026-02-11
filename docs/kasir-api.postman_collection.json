@@ -160,7 +160,13 @@
       "name": "Display Category By ID",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/categories/1",
           "host": [
@@ -179,7 +185,13 @@
       "name": "Create New Category",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n    \"name\": \"Susu\",\n    \"description\": \"Kategori Susu\"\n}",
@@ -206,7 +218,13 @@
       "name": "Update Existing Category",
       "request": {
         "method": "PUT",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n    \"name\": \"Minuman\",\n    \"description\": \"Kategori Minuman\"\n}",
@@ -234,7 +252,13 @@
       "name": "Delete A Category",
       "request": {
         "method": "DELETE",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/categories/1",
           "host": [
@@ -255,13 +279,19 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{url}}/api/products",
+          "raw": "{{url}}/api/products?name=bawang",
           "host": [
             "{{url}}"
           ],
           "path": [
             "api",
             "products"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "bawang"
+            }
           ]
         }
       },
@@ -295,7 +325,13 @@
       "name": "Display Product By ID",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/products/1",
           "host": [
@@ -314,7 +350,13 @@
       "name": "Create New Product",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n    \"name\": \"Bebelac\",\n    \"price\": 10000,\n    \"stock\": 100,\n    \"category_id\": 1\n}",
@@ -341,7 +383,13 @@
       "name": "Update Existing Product",
       "request": {
         "method": "PUT",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n    \"name\": \"Bebelac\",\n    \"price\": 10000,\n    \"stock\": 10,\n    \"category_id\": 2\n}",
@@ -369,7 +417,13 @@
       "name": "Delete A Product",
       "request": {
         "method": "DELETE",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/products/4",
           "host": [
@@ -388,7 +442,13 @@
       "name": "Checkout Transactions",
       "request": {
         "method": "POST",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n    \"checkout\": [\n        {\n            \"product_id\": 1,\n            \"quantity\": 5\n        },\n        {\n            \"product_id\": 5,\n            \"quantity\": 10\n        },\n        {\n            \"product_id\": 4,\n            \"quantity\": 15\n        }\n    ]\n}",
@@ -416,7 +476,13 @@
       "name": "Get Report With Date",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/reports",
           "host": [
@@ -434,7 +500,13 @@
       "name": "Get Report",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/reports",
           "host": [
@@ -454,7 +526,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{url}}/api/reports/hari-ini",
+          "raw": "{{url}}/api/reports/hari-ini?X-API-Key=kasirapiservicekey12345",
           "host": [
             "{{url}}"
           ],
@@ -462,6 +534,13 @@
             "api",
             "reports",
             "hari-ini"
+          ],
+          "query": [
+            {
+              "key": "X-API-Key",
+              "value": "kasirapiservicekey12345",
+              "type": "text"
+            }
           ]
         }
       },

@@ -1,8 +1,8 @@
 package router
 
 import (
-	"net/http"
-
+	"github.com/go-chi/chi/v5"
+	"github.com/pandusatrianura/kasir_api_service/api/middleware"
 	categoriesHandler "github.com/pandusatrianura/kasir_api_service/internal/categories/delivery/http"
 	healthHandler "github.com/pandusatrianura/kasir_api_service/internal/health/delivery/http"
 	indexHandler "github.com/pandusatrianura/kasir_api_service/internal/index/delivery/http"
@@ -33,33 +33,78 @@ func NewRouter(categoriesHandler *categoriesHandler.CategoryHandler, productHand
 	}
 }
 
-func (h *Router) RegisterRoutes() *http.ServeMux {
-	r := http.NewServeMux()
-	r.HandleFunc("GET /health/service", h.health.API)
-	r.HandleFunc("GET /health/db", h.health.DB)
-	r.HandleFunc("GET /products/health", h.products.API)
-	r.HandleFunc("POST /products", h.products.CreateProduct)
-	r.HandleFunc("GET /products", h.products.GetAllProducts)
-	r.HandleFunc("GET /products/{id}", h.products.GetProductByID)
-	r.HandleFunc("PUT /products/{id}", h.products.UpdateProduct)
-	r.HandleFunc("DELETE /products/{id}", h.products.DeleteProduct)
-	r.HandleFunc("GET /categories/health", h.categories.API)
-	r.HandleFunc("POST /categories", h.categories.CreateCategory)
-	r.HandleFunc("GET /categories", h.categories.GetAllCategories)
-	r.HandleFunc("GET /categories/{id}", h.categories.GetCategoryByID)
-	r.HandleFunc("PUT /categories/{id}", h.categories.UpdateCategory)
-	r.HandleFunc("DELETE /categories/{id}", h.categories.DeleteCategory)
-	r.HandleFunc("GET /transactions/health", h.transactions.API)
-	r.HandleFunc("POST /transactions/checkout", h.transactions.Checkout)
-	r.HandleFunc("GET /reports/health", h.report.API)
-	r.HandleFunc("GET /reports/hari-ini", h.report.Today)
-	r.HandleFunc("GET /reports", h.report.Report)
-	r.HandleFunc("GET /docs", h.index.Docs)
+func (h *Router) RegisterProductRoutes() chi.Router {
+	r := chi.NewRouter()
+	products := h.products
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.Auth)
+		r.Post("/", products.CreateProduct)
+		r.Put("/{id}", products.UpdateProduct)
+		r.Delete("/{id}", products.DeleteProduct)
+		r.Get("/{id}", products.GetProductByID)
+	})
+	r.Get("/", products.GetAllProducts)
+	r.Get("/health", products.API)
 	return r
 }
 
-func (h *Router) RegisterIndex() *http.ServeMux {
-	r := http.NewServeMux()
-	r.HandleFunc("GET /", h.index.Index)
+func (h *Router) RegisterCategoriesRoutes() chi.Router {
+	r := chi.NewRouter()
+	categories := h.categories
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.Auth)
+		r.Post("/", categories.CreateCategory)
+		r.Get("/{id}", categories.GetCategoryByID)
+		r.Put("/{id}", categories.UpdateCategory)
+		r.Delete("/{id}", categories.DeleteCategory)
+	})
+
+	r.Get("/", categories.GetAllCategories)
+	r.Get("/health", categories.API)
+	return r
+}
+
+func (h *Router) RegisterTransactionRoutes() chi.Router {
+	r := chi.NewRouter()
+	transactions := h.transactions
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.Auth)
+		r.Post("/checkout", transactions.Checkout)
+	})
+	r.Get("/health", transactions.API)
+	return r
+}
+
+func (h *Router) RegisterReportRoutes() chi.Router {
+	r := chi.NewRouter()
+	report := h.report
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.Auth)
+		r.Get("/hari-ini", report.Today)
+		r.Get("/", report.Report)
+	})
+	r.Get("/health", report.API)
+	return r
+}
+
+func (h *Router) RegisterHealthRoutes() chi.Router {
+	r := chi.NewRouter()
+	health := h.health
+	r.Get("/service", health.API)
+	r.Get("/db", health.DB)
+	return r
+}
+
+func (h *Router) RegisterDocsRoutes() chi.Router {
+	r := chi.NewRouter()
+	index := h.index
+	r.Get("/", index.Docs)
+	return r
+}
+
+func (h *Router) RegisterIndexRoutes() chi.Router {
+	r := chi.NewRouter()
+	index := h.index
+	r.Get("/", index.Index)
 	return r
 }

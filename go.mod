@@ -4,7 +4,9 @@ go 1.25.5
 
 require (
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
+	github.com/go-chi/chi/v5 v5.2.5
 	github.com/lib/pq v1.10.9
+	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/viper v1.21.0
 	github.com/swaggo/swag v1.16.6
 )

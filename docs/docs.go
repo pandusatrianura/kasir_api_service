@@ -61,6 +61,13 @@ const docTemplate = `{
                 "summary": "Create a new category",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Category Data",
                         "name": "category",
                         "in": "body",
@@ -147,6 +154,13 @@ const docTemplate = `{
                 "summary": "Get a category by ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Category ID",
                         "name": "id",
@@ -195,6 +209,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update a category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Category ID",
@@ -253,6 +274,13 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Category ID",
@@ -410,6 +438,13 @@ const docTemplate = `{
                 "summary": "Create a new product",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Product Data",
                         "name": "product",
                         "in": "body",
@@ -496,6 +531,13 @@ const docTemplate = `{
                 "summary": "Get a product by ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Product ID",
                         "name": "id",
@@ -544,6 +586,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update a product",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Product ID",
@@ -603,6 +652,13 @@ const docTemplate = `{
                 "summary": "Delete a product",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Product ID",
                         "name": "id",
@@ -655,6 +711,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "Start Date",
                         "name": "start_date",
                         "in": "query"
@@ -699,6 +762,15 @@ const docTemplate = `{
                     "reports"
                 ],
                 "summary": "Get sales report daily",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -766,6 +838,13 @@ const docTemplate = `{
                 ],
                 "summary": "Checkout products",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Checkout Data",
                         "name": "checkout",
