@@ -66,6 +66,12 @@ func (h *ReportHandler) Today(w http.ResponseWriter, r *http.Request) {
 		endDate   string
 	)
 
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	layout := "2006-01-02"
 
 	timeNow, err := datetime.ParseTime(time.Now().Format(time.RFC3339))
@@ -121,6 +127,12 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 	startDate := r.URL.Query().Get("start_date")
 	endDate := r.URL.Query().Get("end_date")
 	layout := "2006-01-02"
+
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
 
 	if startDate == "" && endDate == "" {
 		timeNow, err := datetime.ParseTime(time.Now().Format(time.RFC3339))

@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -63,6 +64,12 @@ func (h *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	var requestCategory entity.RequestCategory
 	if err := response.ParseJSON(r, &requestCategory); err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidCategoryRequest, err)
@@ -93,6 +100,12 @@ func (h *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 func (h *CategoryHandler) UpdateCategory(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		response.Error(w, http.StatusMethodNotAllowed, constants.ErrorCode, constants.ErrInvalidMethod, nil)
+		return
+	}
+
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
 		return
 	}
 
@@ -136,6 +149,12 @@ func (h *CategoryHandler) DeleteCategory(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -164,6 +183,12 @@ func (h *CategoryHandler) DeleteCategory(w http.ResponseWriter, r *http.Request)
 // @Failure 500 {object} map[string]string
 // @Router /api/categories/{id} [get]
 func (h *CategoryHandler) GetCategoryByID(w http.ResponseWriter, r *http.Request) {
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
