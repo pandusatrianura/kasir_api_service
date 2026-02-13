@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/pandusatrianura/kasir_api_service/api/middleware"
@@ -53,8 +52,6 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "Get User By Email failed", err)
 		return
 	}
-
-	fmt.Println("user: ", user)
 
 	if user == nil {
 		log.Errorf("[AuthController.Login] Login - 4: User not found")

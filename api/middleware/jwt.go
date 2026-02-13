@@ -44,6 +44,7 @@ func JWTAuthMiddleware(next http.Handler) http.Handler {
 		jwtConfig := NewJWTConfig(viper.GetString("JWT_SECRET_KEY"), viper.GetString("JWT_ISSUER"), viper.GetString("JWT_DURATION"))
 
 		if isPublicRoute(r.URL.Path) {
+			next.ServeHTTP(w, r)
 			return
 		}
 
