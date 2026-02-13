@@ -81,6 +81,22 @@ const docTemplate = `{
                     "users"
                 ],
                 "summary": "Logout a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -137,6 +153,13 @@ const docTemplate = `{
                 ],
                 "summary": "Create a new category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -232,6 +255,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -286,6 +316,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update a category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -351,6 +388,13 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -522,6 +566,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Product Data",
                         "name": "product",
                         "in": "body",
@@ -609,6 +660,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -663,6 +721,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update a product",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -730,6 +795,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -788,6 +860,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -840,6 +919,13 @@ const docTemplate = `{
                 ],
                 "summary": "Get sales report daily",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -919,6 +1005,13 @@ const docTemplate = `{
                         "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },

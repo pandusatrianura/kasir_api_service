@@ -73,6 +73,22 @@
                     "users"
                 ],
                 "summary": "Logout a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "your-secret-api-key-here",
+                        "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -129,6 +145,13 @@
                 ],
                 "summary": "Create a new category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -224,6 +247,13 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -278,6 +308,13 @@
                 ],
                 "summary": "Update a category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -343,6 +380,13 @@
                 ],
                 "summary": "Delete a category",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -514,6 +558,13 @@
                         "required": true
                     },
                     {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Product Data",
                         "name": "product",
                         "in": "body",
@@ -601,6 +652,13 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -655,6 +713,13 @@
                 ],
                 "summary": "Update a product",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -722,6 +787,13 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -780,6 +852,13 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
                         "in": "header",
@@ -832,6 +911,13 @@
                 ],
                 "summary": "Get sales report daily",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "your-secret-api-key-here",
@@ -911,6 +997,13 @@
                         "type": "string",
                         "description": "your-secret-api-key-here",
                         "name": "X-API-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer \u003ctoken\u003e",
+                        "name": "Authorization",
                         "in": "header",
                         "required": true
                     },

@@ -84,6 +84,17 @@ paths:
       consumes:
       - application/json
       description: Logout a user by clearing the authentication cookie or token
+      parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -122,6 +133,11 @@ paths:
       - application/json
       description: Create a new category
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -162,6 +178,11 @@ paths:
       - application/json
       description: Delete a category
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -200,6 +221,11 @@ paths:
       - application/json
       description: Get a category by ID
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -238,6 +264,11 @@ paths:
       - application/json
       description: Update a category
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -380,6 +411,11 @@ paths:
         name: X-API-Key
         required: true
         type: string
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Product Data
         in: body
         name: product
@@ -415,6 +451,11 @@ paths:
       - application/json
       description: Delete a product
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -453,6 +494,11 @@ paths:
       - application/json
       description: Get a product by ID
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -491,6 +537,11 @@ paths:
       - application/json
       description: Update a product
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -558,6 +609,11 @@ paths:
       - application/json
       description: Get sales report with or without Date Range (Default Today)
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -594,6 +650,11 @@ paths:
       - application/json
       description: Get sales report daily
       parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
@@ -647,6 +708,11 @@ paths:
       - description: your-secret-api-key-here
         in: header
         name: X-API-Key
+        required: true
+        type: string
+      - description: Bearer <token>
+        in: header
+        name: Authorization
         required: true
         type: string
       - description: Checkout Data
