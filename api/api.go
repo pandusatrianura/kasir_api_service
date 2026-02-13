@@ -91,10 +91,10 @@ func (s *Server) Run() error {
 		r.Mount("/transactions", transactionRoutes)
 		r.Mount("/reports", reportRoutes)
 		r.Mount("/auth", userRoutes)
+		r.Mount("/docs", docsRoutes)
 	})
 	r.Route("/", func(r chi.Router) {
 		r.Mount("/", indexRoutes)
-		r.Mount("/docs", docsRoutes)
 	})
 
 	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))

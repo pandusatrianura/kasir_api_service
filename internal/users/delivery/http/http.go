@@ -55,14 +55,14 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	if user == nil {
 		log.Errorf("[AuthController.Login] Login - 4: User not found")
-		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "User not found", err)
+		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "User not found", nil)
 		return
 	}
 
 	isSame := convert.CheckPasswordHash(requestLogin.Password, user.Password)
 	if !isSame {
 		log.Errorf("[AuthController.Login] Login - 5: Invalid email or password")
-		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "Invalid email or password", err)
+		response.Error(w, http.StatusInternalServerError, constants.ErrorCode, "Invalid email or password", nil)
 		return
 	}
 
