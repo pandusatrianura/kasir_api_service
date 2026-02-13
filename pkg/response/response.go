@@ -36,14 +36,17 @@ func Success(w http.ResponseWriter, status int, code int, message string, v any)
 
 func Error(w http.ResponseWriter, status int, code int, message string, err error) {
 	var e interface{}
+	var msg string
 	if err != nil {
 		e = err.Error()
+		msg = fmt.Sprintf("%s: %s", message, e)
 	} else {
 		e = ""
+		msg = fmt.Sprintf("%s", message)
 	}
 
 	WriteJSONResponse(w, status, APIResponse{
 		Code:    strconv.Itoa(code),
-		Message: fmt.Sprintf("%s: %s", message, e),
+		Message: msg,
 	})
 }

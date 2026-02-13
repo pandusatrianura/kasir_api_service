@@ -156,7 +156,8 @@ The application provides several API endpoints for the functionalities mentioned
 
 ### Auth
 - **Login API Endpoint**: `POST /api/auth/login`
-
+- **Logout API Endpoint**: `POST /api/auth/logout`
+- 
 ## 🛠️ Installation
 
 1. **Clone the Repository**:
@@ -183,6 +184,9 @@ The application provides several API endpoints for the functionalities mentioned
    DATABASE_MAX_IDLE_CONNECTION= 50
    DATABASE_MAX_OPEN_CONNECTION= 100
    API_KEY= "xxxx"
+   JWT_SECRET_KEY= "xxxx"
+   JWT_ISSUER= "xxxx"
+   JWT_DURATION= "24h"
    ```
 
 4. **Run the Application**:
@@ -386,6 +390,13 @@ The application provides several API endpoints for the functionalities mentioned
    "email": "manager@mail.com",
    "password": "manager123"
    }'
+   ```
+2. logout Endpoint:
+   ```bash
+   curl --location '{{url}}/api/auth/logout' \
+   --header 'Authorization: Bearer xxx' \
+   --header 'X-API-Key: your-secret-api-key-here' \
+   --data-raw '{}'
    ```
 
    

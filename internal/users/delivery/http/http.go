@@ -108,3 +108,30 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	response.Success(w, http.StatusOK, constants.SuccessCode, "Login successfully", resp)
 }
+
+// Logout godoc
+// @Summary Logout a user
+// @Description Logout a user by clearing the authentication cookie or token
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /api/auth/logout [post]
+func (h *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		response.Error(w, http.StatusMethodNotAllowed, constants.ErrorCode, constants.ErrInvalidMethod, nil)
+		return
+	}
+
+	cookie := &http.Cookie{
+		Name:     "token",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, cookie)
+
+	response.Success(w, http.StatusOK, constants.SuccessCode, "Logout successfully", nil)
+}

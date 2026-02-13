@@ -79,6 +79,22 @@ paths:
       summary: Login a user
       tags:
       - users
+  /api/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout a user by clearing the authentication cookie or token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Logout a user
+      tags:
+      - users
   /api/categories:
     get:
       consumes:
