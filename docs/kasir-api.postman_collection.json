@@ -581,7 +581,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{url}}/api/reports/hari-ini?X-API-Key=kasirapiservicekey12345",
+          "raw": "{{url}}/api/reports/hari-ini",
           "host": [
             "{{url}}"
           ],
