@@ -67,7 +67,7 @@ func (h *ReportHandler) Today(w http.ResponseWriter, r *http.Request) {
 	)
 
 	role := r.Header.Get("X-User-Roles")
-	if role != constants.ManagerRole {
+	if role != constants.ManagerRole || role != constants.KasirRole {
 		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
 		return
 	}
@@ -129,7 +129,7 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 	layout := "2006-01-02"
 
 	role := r.Header.Get("X-User-Roles")
-	if role != constants.ManagerRole {
+	if role != constants.ManagerRole || role != constants.KasirRole {
 		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
 		return
 	}
