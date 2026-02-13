@@ -109,6 +109,7 @@ func (h *Router) RegisterIndexRoutes() chi.Router {
 	r := chi.NewRouter()
 	index := h.index
 	r.Get("/", index.Index)
+	r.Get("/", index.Docs)
 	return r
 }
 
