@@ -71,6 +71,12 @@ func (h *TransactionHandler) Checkout(w http.ResponseWriter, r *http.Request) {
 		resp      interface{}
 	)
 
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.KasirRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	if err = response.ParseJSON(r, &request); err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidCheckoutRequest, err)
 		return

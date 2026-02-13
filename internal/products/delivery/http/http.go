@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -64,6 +65,12 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	var requestProduct entity.RequestProduct
 	if err := response.ParseJSON(r, &requestProduct); err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidProductRequest, err)
@@ -94,6 +101,12 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 func (h *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		response.Error(w, http.StatusMethodNotAllowed, constants.ErrorCode, constants.ErrInvalidMethod, nil)
+		return
+	}
+
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
 		return
 	}
 
@@ -137,6 +150,12 @@ func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -165,7 +184,14 @@ func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 // @Failure 500 {object} map[string]string
 // @Router /api/products/{id} [get]
 func (h *ProductHandler) GetProductByID(w http.ResponseWriter, r *http.Request) {
+	role := r.Header.Get("X-User-Roles")
+	if role != constants.ManagerRole {
+		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
+		return
+	}
+
 	idStr := chi.URLParam(r, "id")
+
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, constants.ErrorCode, constants.ErrInvalidProductID, err)

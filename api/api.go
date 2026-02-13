@@ -24,6 +24,9 @@ import (
 	transactionsHandler "github.com/pandusatrianura/kasir_api_service/internal/transactions/delivery/http"
 	transactionsRepository "github.com/pandusatrianura/kasir_api_service/internal/transactions/repository"
 	transactionsService "github.com/pandusatrianura/kasir_api_service/internal/transactions/service"
+	userHandler "github.com/pandusatrianura/kasir_api_service/internal/users/delivery/http"
+	userRepository "github.com/pandusatrianura/kasir_api_service/internal/users/repository"
+	userService "github.com/pandusatrianura/kasir_api_service/internal/users/service"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/pandusatrianura/kasir_api_service/pkg/database"
@@ -67,15 +70,20 @@ func (s *Server) Run() error {
 
 	indexHandle := indexHandler.NewIndexHandler()
 
-	routers := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle, reportsHandle)
+	usrRepo := userRepository.NewUserRepository(s.db)
+	usrSvc := userService.NewUserService(usrRepo)
+	usrHandle := userHandler.NewUserHandler(usrSvc)
+
+	r := chi.NewRouter()
+	routers := route.NewRouter(categoriesHandle, productsHandle, healthHandle, transactionsHandle, indexHandle, reportsHandle, usrHandle)
 	productRoute := routers.RegisterProductRoutes()
 	indexRoutes := routers.RegisterIndexRoutes()
 	docsRoutes := routers.RegisterDocsRoutes()
 	categoryRoutes := routers.RegisterCategoriesRoutes()
 	transactionRoutes := routers.RegisterTransactionRoutes()
 	reportRoutes := routers.RegisterReportRoutes()
+	userRoutes := routers.RegisterUserRoutes()
 
-	r := chi.NewRouter()
 	r.Use(middleware.LoggingMiddleware, middleware.ErrorHandlingMiddleware, middleware.CORS)
 	r.Route("/api", func(r chi.Router) {
 		r.Mount("/products", productRoute)
@@ -83,6 +91,7 @@ func (s *Server) Run() error {
 		r.Mount("/transactions", transactionRoutes)
 		r.Mount("/reports", reportRoutes)
 		r.Mount("/docs", docsRoutes)
+		r.Mount("/auth", userRoutes)
 	})
 	r.Route("/", func(r chi.Router) {
 		r.Mount("/", indexRoutes)

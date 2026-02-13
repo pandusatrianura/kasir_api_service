@@ -18,4 +18,5 @@ const (
 	ErrStockNotEnough         = "stock not enough"
 	ErrStockEmpty             = "stock is empty"
 	ErrCategoryNotFound       = "category not found"
+	ErrRoleNotAuthorized      = "role not authorized"
 )
