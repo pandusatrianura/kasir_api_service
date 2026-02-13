@@ -14,6 +14,13 @@ definitions:
       quantity:
         type: integer
     type: object
+  entity.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   entity.RequestCategory:
     properties:
       description:
@@ -37,6 +44,41 @@ info:
   title: Kasir API
   version: "1.0"
 paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: Login Data
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login a user
+      tags:
+      - users
   /api/categories:
     get:
       consumes:
@@ -64,6 +106,11 @@ paths:
       - application/json
       description: Create a new category
       parameters:
+      - description: your-secret-api-key-here
+        in: header
+        name: X-API-Key
+        required: true
+        type: string
       - description: Category Data
         in: body
         name: category

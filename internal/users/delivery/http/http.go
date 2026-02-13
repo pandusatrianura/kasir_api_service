@@ -22,16 +22,16 @@ func NewUserHandler(service service.IUserService) *UserHandler {
 }
 
 // Login godoc
-// @Summary Create a new category
-// @Description Create a new category
-// @Tags categories
+// @Summary Login a user
+// @Description Login a user
+// @Tags users
 // @Accept json
 // @Produce json
-// @Param category body entity.RequestCategory true "Category Data"
+// @Param login body entity.LoginRequest true "Login Data"
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/categories [post]
+// @Router /api/auth/login [post]
 func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		response.Error(w, http.StatusMethodNotAllowed, constants.ErrorCode, constants.ErrInvalidMethod, nil)
