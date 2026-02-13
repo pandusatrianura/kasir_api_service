@@ -115,6 +115,8 @@ func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 // @Tags users
 // @Accept json
 // @Produce json
+// @Param X-API-Key header string true "your-secret-api-key-here"
+// @Param Authorization header string true "Bearer <token>"
 // @Success 200 {object} map[string]interface{}
 // @Router /api/auth/logout [post]
 func (h *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {

@@ -54,6 +54,7 @@ func (h *ProductHandler) API(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param X-API-Key header string true "your-secret-api-key-here"
+// @Param Authorization header string true "Bearer <token>"
 // @Param product body entity.RequestProduct true "Product Data"
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
@@ -91,6 +92,7 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 // @Tags products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Product ID"
 // @Param product body entity.RequestProduct true "Product Data"
@@ -138,6 +140,7 @@ func (h *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 // @Tags products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Product ID"
 // @Success 200 {object} map[string]interface{}
@@ -177,6 +180,7 @@ func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 // @Tags products
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Product ID"
 // @Success 200 {object} map[string]interface{}

@@ -56,6 +56,7 @@ func (h *ReportHandler) API(w http.ResponseWriter, r *http.Request) {
 // @Tags reports
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
@@ -117,6 +118,7 @@ func (h *ReportHandler) Today(w http.ResponseWriter, r *http.Request) {
 // @Tags reports
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param start_date query string false "Start Date"
 // @Param end_date query string false "End Date"

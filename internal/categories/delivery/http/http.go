@@ -52,6 +52,7 @@ func (h *CategoryHandler) API(w http.ResponseWriter, r *http.Request) {
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param category body entity.RequestCategory true "Category Data"
 // @Success 201 {object} map[string]interface{}
@@ -90,6 +91,7 @@ func (h *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Category ID"
 // @Param category body entity.RequestCategory true "Category Data"
@@ -137,6 +139,7 @@ func (h *CategoryHandler) UpdateCategory(w http.ResponseWriter, r *http.Request)
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Category ID"
 // @Success 200 {object} map[string]interface{}
@@ -176,6 +179,7 @@ func (h *CategoryHandler) DeleteCategory(w http.ResponseWriter, r *http.Request)
 // @Tags categories
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer <token>"
 // @Param X-API-Key header string true "your-secret-api-key-here"
 // @Param id path int true "Category ID"
 // @Success 200 {object} map[string]interface{}
