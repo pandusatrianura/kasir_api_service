@@ -215,6 +215,41 @@
       "response": []
     },
     {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"manager@mail.com\",\n    \"password\": \"manager123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/login",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Update Existing Category",
       "request": {
         "method": "PUT",
@@ -324,6 +359,16 @@
     {
       "name": "Display Product By ID",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwMDExOTAsImlhdCI6MTc3MDkxNDc5MH0.tvDhWNp-gNf4gvsswENIZn2-E9zk3zhWTNXRWGOL6hE",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [
           {
@@ -441,6 +486,16 @@
     {
       "name": "Checkout Transactions",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwMDExOTAsImlhdCI6MTc3MDkxNDc5MH0.tvDhWNp-gNf4gvsswENIZn2-E9zk3zhWTNXRWGOL6hE",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
         "header": [
           {

@@ -22,6 +22,17 @@ func NewUserHandler(service service.IUserService) *UserHandler {
 	return &UserHandler{service: service}
 }
 
+// Login godoc
+// @Summary Create a new category
+// @Description Create a new category
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param category body entity.RequestCategory true "Category Data"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/categories [post]
 func (h *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		response.Error(w, http.StatusMethodNotAllowed, constants.ErrorCode, constants.ErrInvalidMethod, nil)

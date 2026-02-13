@@ -115,6 +115,10 @@
 - **Total Transaction**
 - **Product with Most Sales**
 
+### Auth Login
+- **Username**
+- **Password**
+
 ## 📖 API Endpoints
 
 The application provides several API endpoints for the functionalities mentioned above. Below are some key endpoints:
@@ -149,6 +153,9 @@ The application provides several API endpoints for the functionalities mentioned
 - **Health Check Report API Endpoint**: `GET /api/reports/health`
 - **Menampilkan laporan penjualan hari ini**: `GET /api/reports/hari-ini`
 - **Menampilkan laporan penjualan dengan tanggal tertentu**: `GET /api/reports?start_date=2026-02-04&end_date=2026-02-05` **(Default today if start_date and end_date not provided)**
+
+### Auth
+- **Login API Endpoint**: `POST /api/auth/login`
 
 ## 🛠️ Installation
 
@@ -233,11 +240,13 @@ The application provides several API endpoints for the functionalities mentioned
 3. Display Category By ID Endpoint:
    ```bash
    curl --location '{{url}}/api/categories/6' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here'
    ```
 4. Create New Category Endpoint:
    ```bash
    curl --location '{{url}}/api/categories' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
@@ -248,6 +257,7 @@ The application provides several API endpoints for the functionalities mentioned
 5. Update Existing Category Endpoint:
    ```bash
    curl --location --request PUT '{{url}}/api/categories/9' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
@@ -258,6 +268,7 @@ The application provides several API endpoints for the functionalities mentioned
 6. Delete Existing Category Endpoint:
    ```bash
    curl --location --request DELETE '{{url}}/api/categories/9' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here'
    ```
 ### Product
@@ -279,11 +290,13 @@ The application provides several API endpoints for the functionalities mentioned
 4. Display Product By ID Endpoint:
    ```bash
    curl --location '{{url}}/api/products/6' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here'
    ```
 5. Create New Product Endpoint:
    ```bash
    curl --location '{{url}}/api/v1/products' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
@@ -296,6 +309,7 @@ The application provides several API endpoints for the functionalities mentioned
 6. Update Existing Product Endpoint:
    ```bash
    curl --location --request PUT '{{url}}/api/products/9' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
@@ -308,6 +322,7 @@ The application provides several API endpoints for the functionalities mentioned
 7. Delete Existing Product Endpoint:
    ```bash
    curl --location --request DELETE '{{url}}/api/products/9' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here'
    ```
 
@@ -321,6 +336,7 @@ The application provides several API endpoints for the functionalities mentioned
 2. Checkout Endpoint:
    ```bash
    curl --location '{{url}}/api/transactions/checkout' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here' \
    --header 'Content-Type: application/json' \
    --data '{
@@ -351,13 +367,27 @@ The application provides several API endpoints for the functionalities mentioned
 2. Show Today Sales Report Endpoint:
    ```bash
    curl --location '{{url}}/api/reports/hari-ini' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here'
    ```
 3. Show Sales Report With Date Range Endpoint (Default today if start_date and end_date not provided):
    ```bash
    curl --location '{{url}}/api/reports?start_date=2026-02-04&end_date=2026-02-05' \
+   --header 'Authorization: Bearer xxx' \
    --header 'X-API-Key: your-secret-api-key-here'
    ```
+
+### Auth
+1. Login Endpoint:
+   ```bash
+   curl --location '{{url}}/api/auth/login' \
+   --header 'Content-Type: application/json' \
+   --data-raw '{
+   "email": "manager@mail.com",
+   "password": "manager123"
+   }'
+   ```
+
    
 **Note:** Replace `{{url}}` with the URL of your deployed API (see 📖 Hosted API).
 
