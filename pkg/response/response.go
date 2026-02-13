@@ -38,7 +38,10 @@ func Error(w http.ResponseWriter, status int, code int, message string, err erro
 	var e interface{}
 	if err != nil {
 		e = err.Error()
+	} else {
+		e = ""
 	}
+
 	WriteJSONResponse(w, status, APIResponse{
 		Code:    strconv.Itoa(code),
 		Message: fmt.Sprintf("%s: %s", message, e),
