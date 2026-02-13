@@ -129,7 +129,7 @@ func (h *ReportHandler) Report(w http.ResponseWriter, r *http.Request) {
 	layout := "2006-01-02"
 
 	role := r.Header.Get("X-User-Roles")
-	if role != "" {
+	if role == "" {
 		response.Error(w, http.StatusUnauthorized, constants.ErrorCode, constants.ErrRoleNotAuthorized, errors.New(fmt.Sprintf("%s", role)))
 		return
 	}

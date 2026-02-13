@@ -116,5 +116,9 @@ func (h *Router) RegisterUserRoutes() chi.Router {
 	r := chi.NewRouter()
 	user := h.user
 	r.Post("/login", user.Login)
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.Auth, middleware.JWTAuthMiddleware)
+		r.Post("/logout", user.Logout)
+	})
 	return r
 }

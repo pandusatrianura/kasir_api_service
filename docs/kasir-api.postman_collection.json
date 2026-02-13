@@ -222,8 +222,7 @@
           {
             "key": "X-API-Key",
             "value": "kasirapiservicekey12345",
-            "type": "text",
-            "disabled": true
+            "type": "text"
           }
         ],
         "body": {
@@ -244,6 +243,41 @@
             "api",
             "auth",
             "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwODEyMjksImlhdCI6MTc3MDk5NDgyOX0.93Ep_GdDi8AGQ9tOc0yrSeCTr3e2e3Sqs_RPMFboMJ8",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{url}}/api/auth/logout",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
           ]
         }
       },
@@ -314,19 +348,13 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{url}}/api/products?name=bawang",
+          "raw": "{{url}}/api/products",
           "host": [
             "{{url}}"
           ],
           "path": [
             "api",
             "products"
-          ],
-          "query": [
-            {
-              "key": "name",
-              "value": "bawang"
-            }
           ]
         }
       },
@@ -491,7 +519,7 @@
           "bearer": [
             {
               "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwMDExOTAsImlhdCI6MTc3MDkxNDc5MH0.tvDhWNp-gNf4gvsswENIZn2-E9zk3zhWTNXRWGOL6hE",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwNTI5MTksImlhdCI6MTc3MDk2NjUxOX0.gl9D15nyk_C28cUIJSwpK9LvcTy9jxZsFGAgKJzUmFQ",
               "type": "string"
             }
           ]
@@ -530,6 +558,16 @@
     {
       "name": "Get Report With Date",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwNTI5MTksImlhdCI6MTc3MDk2NjUxOX0.gl9D15nyk_C28cUIJSwpK9LvcTy9jxZsFGAgKJzUmFQ",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [
           {
@@ -539,13 +577,23 @@
           }
         ],
         "url": {
-          "raw": "{{url}}/api/reports",
+          "raw": "{{url}}/api/reports?start_date=2026-02-01&end_date=2026-02-12",
           "host": [
             "{{url}}"
           ],
           "path": [
             "api",
             "reports"
+          ],
+          "query": [
+            {
+              "key": "start_date",
+              "value": "2026-02-01"
+            },
+            {
+              "key": "end_date",
+              "value": "2026-02-12"
+            }
           ]
         }
       },
@@ -578,8 +626,24 @@
     {
       "name": "Get Today",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6Im1hbmFnZXJAbWFpbC5jb20iLCJyb2xlcyI6Ik1hbmFnZXIiLCJpc3MiOiJqd3Qta2FzaXItYXBpLXNlcnZpY2UiLCJleHAiOjE3NzEwNTI5MTksImlhdCI6MTc3MDk2NjUxOX0.gl9D15nyk_C28cUIJSwpK9LvcTy9jxZsFGAgKJzUmFQ",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "kasirapiservicekey12345",
+            "type": "text"
+          }
+        ],
         "url": {
           "raw": "{{url}}/api/reports/hari-ini",
           "host": [
@@ -589,13 +653,6 @@
             "api",
             "reports",
             "hari-ini"
-          ],
-          "query": [
-            {
-              "key": "X-API-Key",
-              "value": "kasirapiservicekey12345",
-              "type": "text"
-            }
           ]
         }
       },
